@@ -306,31 +306,32 @@ def write_handout(menu) -> None:
                 for sid in col_ids:
                     sec = menu["sections"][sid]
                     sec_html = render_section(sec, sid)
-                    img_src = sec.get("image")
-                    if img_src:
-                        img_src = f'assets/generated/{img_src}'
+                    # Any section with an `image` or `heroImage` and a section-head
+                    # (i.e. a priced section) renders as a full-width photo panel
+                    # (.side-section); the image becomes the dimmed background
+                    # behind the title + text. Plain <h2> sections like Sandwiches
+                    # stay as normal text sections.
+                    img_raw = sec.get("image") or sec.get("heroImage")
+                    if img_raw:
+                        img_src = img_raw if img_raw.startswith("assets/") else f'assets/generated/{img_raw}'
                         # Drop the inline  tag; it becomes the dimmed background
-                        # layer behind the note text only (text stays full brightness).
+                        # layer behind the title/note text only (text stays full brightness).
                         sec_html = sec_html.replace(
                             f'<img class="section-image" src="{img_src}" alt="{sec["title"]}">',
                             '',
+                        ).replace(
+                            f'<img class="section-hero-image" src="{img_src}" alt="{sec["title"]}">',
+                            '',
                         )
-                        sec_html = sec_html.replace(
-                            '<section class="section"',
-                            '<section class="section side-section"',
-                        )
-                        # Header stays above the photo (no photo behind it). Wrap the
-                        # remaining note paragraphs in .side-photo so the photo sits
-                        # behind them only, dimmed via filter on the image itself.
                         m = re.match(
-                            r'^(<section class="section side-section"[^>]*><div class="section-head">.*?</div>)(.*)</section>$',
+                            r'^(<section class="section"[^>]*><div class="section-head">.*?</div>)(.*)</section>$',
                             sec_html,
                             re.S,
                         )
                         if m:
                             head, tail = m.group(1), m.group(2)
                             sec_html = (
-                                f'{head}'
+                                f'{head.replace("class=\"section\"", "class=\"section side-section\"", 1)}'
                                 f'<div class="side-photo">'
                                 f'<img class="section-bg-img" src="{img_src}" alt="{esc(sec["title"])}">'
                                 f'{tail}'
@@ -350,11 +351,11 @@ def write_handout(menu) -> None:
         "#page-1 .side-section{position:relative;color:white;height:2.6in;display:flex;flex-direction:column;}"
         "#page-1 .side-section > *{position:relative;z-index:2;}"
         "#page-1 .side-section .side-photo{position:relative;z-index:2;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}"
-        "#page-1 .side-section .section-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.5);z-index:0;pointer-events:none;display:block;}\n#page-1 .side-section .section-head h2{font-size:22px;padding-top:0.08in;}"
-        "#page-1 .side-section .side-photo > p{position:relative;z-index:2;margin:0 0.12in;font-size:17px;line-height:1.45;max-width:92%;}"
+        "#page-1 .side-section .section-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.5);z-index:0;pointer-events:none;display:block;}\n#page-1 .side-section .section-head h2{font-size:22px;padding-top:0.08in;font-family:Oswald,Impact,sans-serif;font-weight:900;text-shadow:0 2px 10px rgba(0,0,0,0.95);color:white!important;}"
+        "#page-1 .side-section .side-photo > p{position:relative;z-index:2;margin:0 0.12in;font-size:17px;line-height:1.45;max-width:92%;font-family:Oswald,Impact,sans-serif;font-weight:600;text-shadow:0 2px 10px rgba(0,0,0,0.95);color:white!important;}"
         "#page-1 .mast{background:transparent;padding:0.12in 0.18in;border-radius:6px;margin-bottom:0.06in;}"
         "#page-1 .col{justify-content:flex-start;}"
-        "#page-1 #section-quesadilla{height:3.6in;}"
+        "#page-1 #section-quesadilla{height:2.6in;}"
         "#page-1 #section-crazyPotato{height:2.6in;}"
         "#page-1 #section-wings .section-hero-image{max-height:1.7in;}"
         ".page-label{color:var(--yellow);font-family:Oswald,Impact,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;font-size:20px;margin:0 0 0.12in 0;text-shadow:0 2px 8px rgba(0,0,0,0.9);}"
