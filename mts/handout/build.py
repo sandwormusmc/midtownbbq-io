@@ -78,7 +78,7 @@ def header_row(headers):
     )
 
 
-def render_section(section) -> str:
+def render_section(section, sid=None) -> str:
     if section.get("groups"):
         # For sections with groups, only render the groups (each group has its own section)
         return "".join(render_group(g, section["title"], section) for g in section.get("groups", []))
@@ -103,7 +103,8 @@ def render_section(section) -> str:
         )
     else:
         head = f'<h2>{esc(section["title"])}</h2>'
-    parts = [f'<section class="section">{head}']
+    sid_attr = f' id="section-{sid}"' if sid else ''
+    parts = [f'<section class="section"{sid_attr}>{head}']
     if section.get("subheader"):
         parts.append(f'<h3 class="subheader">{esc(section["subheader"])}</h3>')
     if section.get("heroImage"):
@@ -296,54 +297,48 @@ def write_handout(menu) -> None:
         # Override for front page
         if page["id"] == "page-1":
             mast = render_mast(menu)
-            # Left column
-            left_ids = page["columns"][0]
-            left_body = "".join(render_section(menu["sections"][sid]) for sid in left_ids)
-            left_col = f'<div class="col">{left_body}</div>'
-            # Quesadilla & Crazy Potato side by side
-            right_now = []
-            for sid in page["columns"][1][:2]:
-                sec = menu["sections"][sid]
-                sec_html = render_section(sec)
-                img_src = sec.get("image")
-                if img_src:
-                    img_src = f'assets/generated/{img_src}'
-                    # Drop the inline  tag; it becomes the dimmed background layer
-                    # below the note text only (text stays at full brightness).
-                    sec_html = sec_html.replace(
-                        f'<img class="section-image" src="{img_src}" alt="{sec["title"]}">',
-                        '',
-                    )
-                    sec_html = sec_html.replace(
-                        '<section class="section">',
-                        '<section class="section side-section">',
-                    )
-                    # Header stays above the photo (no photo behind it). Wrap the
-                    # remaining note paragraphs in .side-photo so the photo sits
-                    # behind them only, dimmed via filter on the image itself.
-                    m = re.match(
-                        r'^(<section class="section side-section"><div class="section-head">.*?</div>)(.*)</section>$',
-                        sec_html,
-                        re.S,
-                    )
-                    if m:
-                        head, tail = m.group(1), m.group(2)
-                        sec_html = (
-                            f'{head}'
-                            f'<div class="side-photo">'
-                            f'<img class="section-bg-img" src="{img_src}" alt="{esc(sec["title"])}">'
-                            f'{tail}'
-                            f'</div></section>'
+            # Any section with an `image` renders as a full-width photo panel
+            # (.side-section) inside its column; everything else is a normal
+            # text section. Columns stack in menu order.
+            cols_html = []
+            for col_ids in page["columns"]:
+                col_parts = []
+                for sid in col_ids:
+                    sec = menu["sections"][sid]
+                    sec_html = render_section(sec, sid)
+                    img_src = sec.get("image")
+                    if img_src:
+                        img_src = f'assets/generated/{img_src}'
+                        # Drop the inline  tag; it becomes the dimmed background
+                        # layer behind the note text only (text stays full brightness).
+                        sec_html = sec_html.replace(
+                            f'<img class="section-image" src="{img_src}" alt="{sec["title"]}">',
+                            '',
                         )
-                right_now.append(sec_html)
-            right_body = f'<div class="side-by-side">{"".join(right_now)}</div>'
-            # Remaining sections (Wings etc.) stack below the side-by-side row in the same
-            # right column — not a third grid column (the page grid is only 2 columns, so a
-            # third .col would wrap under the left column and bleed off the right edge).
-            remaining_ids = page["columns"][1][2:]
-            remaining_body = "".join(render_section(menu["sections"][sid]) for sid in remaining_ids)
-            right_col = f'<div class="col">{right_body}{remaining_body}</div>'
-            inner = mast + f'<div class="columns">{left_col}{right_col}</div>' + render_hours(menu)
+                        sec_html = sec_html.replace(
+                            '<section class="section"',
+                            '<section class="section side-section"',
+                        )
+                        # Header stays above the photo (no photo behind it). Wrap the
+                        # remaining note paragraphs in .side-photo so the photo sits
+                        # behind them only, dimmed via filter on the image itself.
+                        m = re.match(
+                            r'^(<section class="section side-section"[^>]*><div class="section-head">.*?</div>)(.*)</section>$',
+                            sec_html,
+                            re.S,
+                        )
+                        if m:
+                            head, tail = m.group(1), m.group(2)
+                            sec_html = (
+                                f'{head}'
+                                f'<div class="side-photo">'
+                                f'<img class="section-bg-img" src="{img_src}" alt="{esc(sec["title"])}">'
+                                f'{tail}'
+                                f'</div></section>'
+                            )
+                    col_parts.append(sec_html)
+                cols_html.append(f'<div class="col">{"".join(col_parts)}</div>')
+            inner = mast + f'<div class="columns">{"".join(cols_html)}</div>' + render_hours(menu)
 
         page_id = esc(page["id"])
         label = esc(page_labels.get(page["id"], page["id"]))
@@ -352,15 +347,17 @@ def write_handout(menu) -> None:
 
     page_css = (
         "@page { size: letter portrait; margin: 0; }"
-        "#page-1 .side-by-side{display:flex;gap:1rem;margin-top:0.15in;}"
-        "#page-1 .side-section{position:relative;color:white;}"
-        "#page-1 .side-section::before{content:\"\";position:absolute;inset:0;background:rgba(0,0,0,0.3);z-index:-1;}"
+        "#page-1 .side-section{position:relative;color:white;height:2.6in;display:flex;flex-direction:column;}"
         "#page-1 .side-section > *{position:relative;z-index:2;}"
-        "#page-1 .side-section .side-photo{position:relative;z-index:2;}"
-        "#page-1 .side-section .section-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.5);z-index:0;pointer-events:none;display:block;}\n#page-1 .side-section .section-head h2{font-size:28px;padding-top:0.08in;}"
-        "#page-1 .side-section .side-photo > p{position:relative;z-index:2;}"
-        "#page-1 .mast{background:rgba(8,7,6,0.85);padding:0.12in 0.18in;border-radius:6px;margin-bottom:0.06in;}"
+        "#page-1 .side-section .side-photo{position:relative;z-index:2;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}"
+        "#page-1 .side-section .section-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.5);z-index:0;pointer-events:none;display:block;}\n#page-1 .side-section .section-head h2{font-size:22px;padding-top:0.08in;}"
+        "#page-1 .side-section .side-photo > p{position:relative;z-index:2;margin:0 0.12in;font-size:17px;line-height:1.45;max-width:92%;}"
+        "#page-1 .mast{background:transparent;padding:0.12in 0.18in;border-radius:6px;margin-bottom:0.06in;}"
         "#page-1 .col{justify-content:flex-start;}"
+        "#page-1 #section-quesadilla{height:3.6in;}"
+        "#page-1 #section-crazyPotato{height:2.6in;}"
+        "#page-1 #section-wings .section-hero-image{max-height:1.7in;}"
+        ".page-label{color:var(--yellow);font-family:Oswald,Impact,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;font-size:20px;margin:0 0 0.12in 0;text-shadow:0 2px 8px rgba(0,0,0,0.9);}"
     )
     html_doc = page_shell(
         "Midtown Smokehouse menu handout",

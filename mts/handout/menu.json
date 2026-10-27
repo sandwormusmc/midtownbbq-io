@@ -293,6 +293,7 @@
     "quesadilla": {
       "title": "Quesadilla",
       "price": "$10",
+      "note": "A flour tortilla stuffed with melted cheese and your choice of slow-smoked meat, grilled until golden and crisp.",
       "choiceNotePrefix": "Choose: ",
       "choiceNote": "Pulled Pork \u00b7 Brisket \u00b7 Pulled Chicken",
       "image": "quesadilla.jpg"
@@ -448,10 +449,10 @@
         [
           "sandwiches",
           "alacarte",
-          "sides"
+          "sides",
+          "quesadilla"
         ],
         [
-          "quesadilla",
           "crazyPotato",
           "wings",
           "desserts"
