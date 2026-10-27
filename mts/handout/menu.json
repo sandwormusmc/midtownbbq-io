@@ -1,0 +1,585 @@
+{
+  "brand": "Midtown Smokehouse",
+  "tagline": "LOW & SLOW. DONE RIGHT.",
+  "print": {
+    "size": "US Letter portrait",
+    "assumption": "No print trim size was specified. Pages are US Letter (8.5 \u00d7 11 in) portrait, with critical type inside a 0.3 in safe margin."
+  },
+  "contact": {
+    "street": "26056 W. Twelve Mile Road",
+    "city": "Southfield, MI 48034",
+    "phone": "248-428-7278"
+  },
+  "hoursFooter": "MON Closed \u00b7 TUE\u2013FRI 11AM\u20137PM \u00b7 SAT 12PM\u20138PM \u00b7 SUN 12PM\u20137PM",
+  "hours": [
+    {
+      "days": "Monday",
+      "time": "Closed"
+    },
+    {
+      "days": "Tuesday\u2013Friday",
+      "time": "11 AM\u20137 PM"
+    },
+    {
+      "days": "Saturday",
+      "time": "12 PM\u20138 PM"
+    },
+    {
+      "days": "Sunday",
+      "time": "12 PM\u20137 PM"
+    }
+  ],
+  "sections": {
+    "platters": {
+      "title": "Platters",
+      "note": "Served with 2 sides + 2 Texas toasts",
+      "subheader": "Half & Full",
+      "items": [
+        {
+          "name": "Beef Brisket",
+          "portion": "\u00bd lb",
+          "price": "$24"
+        },
+        {
+          "name": "Half Smoked Chicken",
+          "price": "$18"
+        },
+        {
+          "name": "\u00bd Slab St. Louis Ribs",
+          "price": "$21"
+        },
+        {
+          "name": "Rib Tips",
+          "portion": "1 lb",
+          "price": "$17"
+        },
+        {
+          "name": "Pulled Pork",
+          "portion": "\u00bd lb",
+          "price": "$15"
+        },
+        {
+          "name": "Pulled Chicken",
+          "portion": "\u00bd lb",
+          "price": "$15"
+        },
+        {
+          "name": "Smoked Sausage",
+          "portion": "\u00bd lb",
+          "price": "$17"
+        }
+      ],
+      "heroImage": "assets/generated/platters-hero.png"
+    },
+    "bigPlatters": {
+      "title": "Big Platters",
+      "note": "Served with 2 large sides + 2 Texas toasts",
+      "items": [
+        {
+          "name": "Whole Smoked Chicken",
+          "price": "$26"
+        },
+        {
+          "name": "Whole St. Louis Slab of Ribs",
+          "price": "$36"
+        },
+        {
+          "name": "Rib Tips",
+          "portion": "2 lb",
+          "price": "$25"
+        },
+        {
+          "name": "Brisket",
+          "portion": "1 lb",
+          "price": "$35"
+        },
+        {
+          "name": "Pulled Pork",
+          "portion": "1 lb",
+          "price": "$20"
+        }
+      ]
+    },
+    "combos": {
+      "title": "Combos",
+      "note": "Served with 2 small sides and 1 Texas toast",
+      "offers": [
+        {
+          "name": "Pick 2",
+          "price": "$24"
+        },
+        {
+          "name": "Pick 3",
+          "price": "$30"
+        }
+      ],
+      "choicesLabel": "Choose:",
+      "choices": [
+        "Smoked Wings (3)",
+        "Ribs (\u00bc rack)",
+        "Rib Tips (\u00bd lb)",
+        "Pulled Pork (\u2153 lb)",
+        "Pulled Chicken (\u00bd lb)",
+        "Sausage (\u00bd lb)"
+      ],
+      "choiceNotePrefix": "Choose: ",
+      "choiceNote": "Jalape\u00f1o Cheese \u00b7 Polish \u00b7 Beef",
+      "heroImage": "assets/generated/combos-hero.png"
+    },
+    "sides": {
+      "title": "Sides",
+      "priceHeaders": [
+        "Sm",
+        "Lg"
+      ],
+      "items": [
+        {
+          "name": "Mac & Cheese",
+          "prices": [
+            "$4.50",
+            "$6.50"
+          ]
+        },
+        {
+          "name": "Sweet Corn",
+          "prices": [
+            "$4.50",
+            "$6.50"
+          ]
+        },
+        {
+          "name": "Collard Greens",
+          "prices": [
+            "$4.50",
+            "$6.50"
+          ]
+        },
+        {
+          "name": "Baked Beans",
+          "prices": [
+            "$4.50",
+            "$6.00"
+          ]
+        },
+        {
+          "name": "Potato Wedges",
+          "prices": [
+            "$5.00",
+            "$7.00"
+          ]
+        }
+      ],
+      "single": [
+        {
+          "name": "Corn Bread",
+          "price": "$2.50"
+        }
+      ]
+    },
+    "catering": {
+      "title": "Catering",
+      "note": "\u00bd sheet",
+      "items": [
+        {
+          "name": "Mac & Cheese",
+          "price": "$35"
+        },
+        {
+          "name": "Baked Beans",
+          "price": "$35"
+        },
+        {
+          "name": "Collard Greens",
+          "price": "$35"
+        },
+        {
+          "name": "Sweet Corn",
+          "price": "$30"
+        },
+        {
+          "name": "Potato Wedges",
+          "price": "$30"
+        }
+      ]
+    },
+    "beverages": {
+      "title": "Beverages",
+      "items": [
+        {
+          "name": "Soda, 12 oz",
+          "price": "$1.50"
+        },
+        {
+          "name": "Soda, 2 L",
+          "price": "$4.00"
+        },
+        {
+          "name": "Iced Tea",
+          "price": "$2.00"
+        },
+        {
+          "name": "Water, 16 oz",
+          "price": "$1.50"
+        },
+        {
+          "name": "Jarritos, 12.5 oz",
+          "price": "$2.50"
+        },
+        {
+          "name": "Root Beer, 12 oz",
+          "price": "$2.50"
+        }
+      ]
+    },
+    "sandwiches": {
+      "title": "Sandwiches",
+      "note": "Served with coleslaw and pickles",
+      "choiceNotePrefix": "Choose: ",
+      "items": [
+        {
+          "name": "Sliced or Chopped Brisket",
+          "price": "$12"
+        },
+        {
+          "name": "Pulled Pork",
+          "price": "$10"
+        },
+        {
+          "name": "Pulled Chicken",
+          "price": "$10"
+        },
+        {
+          "name": "Crispy Chicken",
+          "price": "$10"
+        },
+        {
+          "name": "Sausage Sandwich",
+          "price": "$10",
+          "after": "Jalape\u00f1o Cheese \u00b7 Polish \u00b7 Beef"
+        },
+        {
+          "name": "Add 1 small side & drink",
+          "price": "$4"
+        }
+      ],
+      "heroImage": "assets/generated/sandwiches-hero.png"
+    },
+    "specials": {
+      "title": "Specials",
+      "choiceNotePrefix": "Choose: ",
+      "items": [
+        {
+          "name": "Brisket Grilled Cheese",
+          "price": "$12",
+          "choiceNote": "Brisket \u00b7 Pulled Pork \u00b7 Sausage"
+        },
+        {
+          "name": "Brisket Mac & Cheese",
+          "price": "$12",
+          "choiceNote": "Brisket \u00b7 Pulled Pork \u00b7 Sausage"
+        },
+        {
+          "name": "Tips & Wings (6)",
+          "price": "$20",
+          "choiceNote": "Smoked or Fried"
+        },
+        {
+          "name": "Midtown Loaded Sandwich",
+          "price": "$16",
+          "choiceNote": "Brisket \u00b7 Pulled Pork \u00b7 Sausage"
+        }
+      ]
+    },
+    "quesadilla": {
+      "title": "Quesadilla",
+      "price": "$10",
+      "choiceNotePrefix": "Choose: ",
+      "choiceNote": "Pulled Pork \u00b7 Brisket \u00b7 Pulled Chicken",
+      "image": "quesadilla.jpg"
+    },
+    "crazyPotato": {
+      "title": "Crazy Potato",
+      "price": "$14",
+      "note": "Potato topped with Mac & Cheese, Baked Beans, Sour Cream with your choice of Meat (Beef Brisket or Pulled Pork).",
+      "image": "crazy-potato.jpg"
+    },
+    "alacarte": {
+      "title": "Meat \u00c0 La Carte",
+      "priceHeaders": [
+        "\u00bd lb",
+        "1 lb",
+        "Half",
+        "Full"
+      ],
+      "items": [
+        {
+          "name": "Beef Brisket",
+          "prices": [
+            "$14",
+            "$26",
+            "",
+            ""
+          ]
+        },
+        {
+          "name": "Pulled Chicken",
+          "prices": [
+            "$9",
+            "$16",
+            "",
+            ""
+          ]
+        },
+        {
+          "name": "Rib Tips",
+          "prices": [
+            "\u2014",
+            "$12",
+            "",
+            ""
+          ]
+        },
+        {
+          "name": "Pulled Pork",
+          "prices": [
+            "$9",
+            "$16",
+            "",
+            ""
+          ]
+        },
+        {
+          "name": "Brisket Blackened",
+          "prices": [
+            "$16",
+            "$30",
+            "",
+            ""
+          ]
+        },
+        {
+          "name": "Sausage",
+          "prices": [
+            "$9",
+            "$15",
+            "",
+            ""
+          ],
+          "choiceNote": "Jalape\u00f1o Cheese \u00b7 Polish \u00b7 Beef"
+        },
+        {
+          "name": "Smoked Chicken",
+          "prices": [
+            "",
+            "",
+            "$12",
+            "$20"
+          ]
+        },
+        {
+          "name": "St. Louis Style Ribs",
+          "prices": [
+            "",
+            "",
+            "$15",
+            "$28"
+          ]
+        }
+      ]
+    },
+    "wings": {
+      "title": "Whole Wings",
+      "note": "Wings only",
+      "priceHeaders": [
+        "6",
+        "12",
+        "24"
+      ],
+      "items": [
+        {
+          "name": "Fried",
+          "prices": [
+            "$10",
+            "$18",
+            "$32"
+          ]
+        },
+        {
+          "name": "Smoked",
+          "prices": [
+            "$12",
+            "$20",
+            "$35"
+          ]
+        }
+      ],
+      "heroImage": "assets/generated/wings-hero.png"
+    },
+    "desserts": {
+      "title": "Desserts",
+      "items": [
+        {
+          "name": "Fruit Cup",
+          "price": "$5"
+        },
+        {
+          "name": "Carrot Cake",
+          "price": "$6"
+        },
+        {
+          "name": "Strawberry Cake",
+          "price": "$6"
+        },
+        {
+          "name": "Brownie",
+          "price": "$3"
+        }
+      ]
+    },
+    "filler": {
+      "title": "",
+      "items": []
+    }
+  },
+  "handoutPages": [
+    {
+      "id": "page-1",
+      "columns": [
+        [
+          "sandwiches",
+          "alacarte",
+          "sides"
+        ],
+        [
+          "quesadilla",
+          "crazyPotato",
+          "wings",
+          "desserts"
+        ]
+      ]
+    },
+    {
+      "id": "page-2",
+      "columns": [
+        [
+          "platters",
+          "bigPlatters",
+          "combos"
+        ],
+        [
+          "sides",
+          "catering",
+          "specials",
+          "beverages"
+        ]
+      ]
+    }
+  ],
+  "screens": [
+    {
+      "id": "01-platters",
+      "title": "Platters",
+      "background": "bg-platters.jpg",
+      "footer": "hours",
+      "columns": [
+        [
+          "platters"
+        ],
+        [
+          "bigPlatters"
+        ]
+      ]
+    },
+    {
+      "id": "02-sandwiches",
+      "title": "Sandwiches and specials",
+      "background": "bg-sandwiches.jpg",
+      "footer": "contact",
+      "columns": [
+        [
+          "sandwiches",
+          "quesadilla"
+        ],
+        [
+          "specials",
+          "crazyPotato"
+        ]
+      ]
+    },
+    {
+      "id": "03-alacarte",
+      "title": "\u00c0 la carte, wings, and combos",
+      "background": "bg-alacarte.jpg",
+      "footer": "hours",
+      "columns": [
+        [
+          "alacarte"
+        ],
+        [
+          "wings",
+          "combos"
+        ]
+      ]
+    },
+    {
+      "id": "04-sides",
+      "title": "Sides, catering, drinks, and desserts",
+      "background": "bg-sides.jpg",
+      "footer": "contact",
+      "compact": true,
+      "columns": [
+        [
+          "sides",
+          "catering"
+        ],
+        [
+          "beverages",
+          "desserts"
+        ]
+      ]
+    }
+  ],
+  "unconfirmed": {
+    "note": "Kept for the project record. Not printed. Old prices are not confirmed.",
+    "items": [
+      {
+        "name": "Coleslaw (priced side)",
+        "old": "$4.50 small / $6 large",
+        "note": "Coleslaw stays included with sandwiches."
+      },
+      {
+        "name": "Jalape\u00f1o Cheese Corn Bread",
+        "old": "$2.99"
+      },
+      {
+        "name": "Wing platters",
+        "old": "6 fried $17 / 6 smoked $19"
+      },
+      {
+        "name": "Midtown Meat Sampler",
+        "old": "$55",
+        "note": "\u00bd lb brisket, \u00bd lb pulled pork, 1 lb rib tips, \u00bd slab ribs, \u00bd lb mixed sausage, 3 smoked wings."
+      },
+      {
+        "name": "BBQ sauce 4 oz",
+        "old": "$0.75"
+      },
+      {
+        "name": "BBQ sauce 16 oz",
+        "old": "$6.50"
+      },
+      {
+        "name": "Texas toast extra",
+        "old": "$0.75"
+      },
+      {
+        "name": "Strawberry Banana Cake",
+        "note": "Replaced by the current four-item dessert list."
+      },
+      {
+        "name": "Strawberry Lemon Cake",
+        "note": "Replaced by the current four-item dessert list."
+      }
+    ]
+  }
+}

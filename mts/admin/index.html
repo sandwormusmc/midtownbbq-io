@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midtown Smokehouse | Menu CMS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --accent-yellow: #F5D000;
+      --flame-orange: #FF5F00;
+      --charcoal: #161412;
+    }
+    html { height: 100%; }
+    body {
+      background-color: var(--charcoal);
+      color: white;
+      font-family: sans-serif;
+      margin: 0;
+      min-height: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .hero-bg {
+      position: fixed;
+      inset: 0;
+      background: url('/brand-kit/photos/hero_smoked_meats.jpg') center/cover no-repeat;
+      filter: brightness(0.6);
+      z-index: -2;
+    }
+    .vignette {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle, transparent 20%, rgba(22,20,18,0.6) 60%, rgba(22,20,18,0.92) 100%);
+      z-index: -1;
+    }
+    .page-content {
+      position: relative;
+      flex: 1 0 auto;
+      width: 100%;
+    }
+    .bg-fade {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: linear-gradient(
+        to bottom,
+        rgba(22, 20, 18, 0) 0%,
+        rgba(22, 20, 18, 0) 14%,
+        rgba(22, 20, 18, 0.5) 42%,
+        rgba(22, 20, 18, 0.78) 75%,
+        #0b0b0b 100%
+      );
+    }
+    .page-content > *:not(.bg-fade) {
+      position: relative;
+      z-index: 1;
+    }
+    .bg-surface-glass {
+      background-color: rgba(22, 20, 18, 0.55);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .btn-primary {
+      background-color: var(--flame-orange);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-weight: bold;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-secondary {
+      background: transparent;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      border: 1px solid rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.45);
+    }
+    .btn-danger {
+      background: transparent;
+      color: rgba(255,255,255,0.65);
+      padding: 10px 18px;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      border: 1px solid rgba(255,95,0,0.35);
+      cursor: pointer;
+    }
+    .btn-danger:hover { color: #FF5F00; border-color: #FF5F00; }
+    .nav-link {
+      color: rgba(255,255,255,0.7);
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: var(--accent-yellow); }
+    .text-accent-yellow { color: var(--accent-yellow); }
+    .nav-logo {
+      display: block;
+      height: 2rem;
+      width: auto;
+      max-width: 9.5rem;
+      object-fit: contain;
+    }
+    @media (min-width: 768px) {
+      .nav-logo { height: 2.25rem; max-width: 11rem; }
+    }
+    label.field-label {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-yellow);
+      margin-bottom: 0.4rem;
+      font-weight: 700;
+    }
+    input.field, textarea.field, select.field {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 0.5rem;
+      padding: 0.65rem 0.8rem;
+      color: #fff;
+      outline: none;
+    }
+    input.field:focus, textarea.field:focus, select.field:focus {
+      border-color: rgba(255, 95, 0, 0.55);
+    }
+    .site-footer {
+      position: relative;
+      z-index: 10;
+      flex-shrink: 0;
+      margin-top: auto;
+      padding: 1.25rem 1.5rem 1.75rem;
+      text-align: center;
+      background: #0b0b0b;
+      border-top: 1px solid rgba(255, 95, 0, 0.35);
+    }
+    .site-footer-line {
+      margin: 0;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #FF5F00;
+      line-height: 1.6;
+    }
+    .site-footer-line a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
+    }
+    .item-thumb {
+      width: 100%;
+      height: 7.5rem;
+      object-fit: cover;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.35);
+    }
+    .cms-toolbar {
+      position: sticky;
+      top: 4.75rem;
+      z-index: 40;
+      background: rgba(22, 20, 18, 0.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 1rem;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    }
+  </style>
+  <script>window.MTS_CMS_API = 'https://57erdxkz5wiy4xs3sv5zwbnmja0gbqso.lambda-url.us-east-1.on.aws';</script>
+</head>
+<body>
+  <div class="hero-bg"></div>
+  <div class="vignette"></div>
+
+  <nav class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
+    <div class="flex items-center space-x-8">
+      <a href="/" class="inline-flex items-center" aria-label="Midtown Smokehouse home">
+        <img class="nav-logo" src="/brand-kit/logos/primary_logo_lockup_sm.png" alt="Midtown Smokehouse">
+      </a>
+      <div class="hidden md:flex space-x-6 text-sm font-medium">
+        <a href="/pages/menu.html" class="nav-link">MENU</a>
+        <span class="text-accent-yellow">CMS</span>
+        <a href="/pages/about.html" class="nav-link">OUR STORY</a>
+      </div>
+    </div>
+    <a href="/pages/menu.html" class="btn-primary text-sm" target="_blank">View Live Menu</a>
+  </nav>
+
+  <div class="page-content">
+    <div class="bg-fade" aria-hidden="true"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24 w-full">
+      <header class="mb-12 text-center">
+        <h1 class="text-5xl md:text-6xl font-black mb-4 italic tracking-tighter">MENU CMS</h1>
+        <div class="h-1 w-24 bg-[var(--flame-orange)] mx-auto mb-4"></div>
+        <p class="text-white/60">Add and edit menu items — publishes to the live menu.</p>
+      </header>
+
+      <section id="login" class="bg-surface-glass p-8 md:p-10 rounded-2xl border border-white/10 max-w-md mx-auto">
+        <h2 class="text-accent-yellow text-sm font-bold uppercase tracking-widest mb-6">Sign in</h2>
+        <label class="field-label" for="password">Admin password</label>
+        <input id="password" class="field mb-5" type="password" autocomplete="current-password" />
+        <button class="btn-primary w-full" id="login-btn">Sign in</button>
+        <p id="login-error" class="text-red-400 text-sm mt-4 hidden"></p>
+      </section>
+
+      <section id="app" class="hidden space-y-8">
+        <div class="cms-toolbar p-4 md:p-5 flex flex-wrap gap-3 items-center justify-between">
+          <div>
+            <p class="text-white/60 text-sm">Signed in · edits go live when you publish</p>
+            <p id="status" class="text-sm text-white/50 mt-1"></p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button class="btn-secondary" type="button" data-action="reload">Reload</button>
+            <button class="btn-primary text-sm" type="button" data-action="save">Save &amp; Publish</button>
+          </div>
+        </div>
+        <div id="categories" class="space-y-8"></div>
+        <button class="btn-secondary" id="add-category" type="button">+ Add category</button>
+        <div class="cms-toolbar p-4 md:p-5 flex flex-wrap gap-3 items-center justify-between">
+          <p class="text-white/60 text-sm">Done editing?</p>
+          <div class="flex flex-wrap gap-2">
+            <button class="btn-secondary" type="button" data-action="reload">Reload</button>
+            <button class="btn-primary text-sm" type="button" data-action="save">Save &amp; Publish</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p class="site-footer-line">
+      &copy; 2026 Midtown Smokehouse, LLC
+      <span style="color:rgba(255,95,0,0.45);margin:0 0.55rem">|</span>
+      Menu CMS
+    </p>
+  </footer>
+
+  <script>
+    const API = localStorage.getItem('mtsCmsApi') || (window.MTS_CMS_API || '');
+    let token = sessionStorage.getItem('mtsCmsToken') || '';
+    let menu = null;
+
+    const $ = (id) => document.getElementById(id);
+    const loginEl = $('login');
+    const appEl = $('app');
+    const statusEl = $('status');
+
+    function setStatus(msg, ok) {
+      statusEl.textContent = msg || '';
+      statusEl.className = 'text-sm mt-1 ' + (ok === false ? 'text-red-400' : ok ? 'text-emerald-400' : 'text-white/50');
+    }
+
+    function assetUrl(path) {
+      if (!path) return '';
+      if (/^https?:\/\//i.test(path)) return path;
+      return path.replace(/^\.\.\//, '/').replace(/^\.\//, '/');
+    }
+
+    async function api(path, opts = {}) {
+      const headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      const res = await fetch((API || '') + path, { ...opts, headers });
+      const text = await res.text();
+      let data = null;
+      try { data = text ? JSON.parse(text) : null; } catch { data = { raw: text }; }
+      if (!res.ok) throw new Error((data && data.error) || res.statusText || 'Request failed');
+      return data;
+    }
+
+    function uid(prefix) {
+      return prefix + '-' + Math.random().toString(36).slice(2, 8);
+    }
+
+    function esc(s) {
+      return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    function render() {
+      const root = $('categories');
+      root.innerHTML = '';
+      (menu.categories || []).forEach((cat, ci) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'bg-surface-glass p-6 md:p-8 rounded-2xl border border-white/10 space-y-5';
+        wrap.innerHTML = `
+          <div class="flex items-center mb-2">
+            <h2 class="text-2xl font-black tracking-tighter uppercase">${esc(cat.name || 'Category')}</h2>
+            <div class="flex-grow h-px bg-white/10 ml-6"></div>
+          </div>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="field-label">Category name</label>
+              <input class="field" data-k="name" value="${esc(cat.name || '')}" />
+            </div>
+            <div class="flex items-end">
+              <button class="btn-danger w-full" data-del-cat type="button">Delete category</button>
+            </div>
+          </div>
+          <div class="space-y-4" data-items></div>
+          <button class="btn-secondary" data-add-item type="button">+ Add item</button>
+        `;
+        const itemsEl = wrap.querySelector('[data-items]');
+        (cat.items || []).forEach((item, ii) => {
+          itemsEl.appendChild(itemRow(item, ci, ii));
+        });
+        wrap.querySelector('[data-k="name"]').oninput = (e) => {
+          cat.name = e.target.value;
+          wrap.querySelector('h2').textContent = (cat.name || 'Category').toUpperCase();
+        };
+        wrap.querySelector('[data-del-cat]').onclick = () => {
+          if (confirm('Delete this category?')) { menu.categories.splice(ci, 1); render(); }
+        };
+        wrap.querySelector('[data-add-item]').onclick = () => {
+          cat.items = cat.items || [];
+          cat.items.push({
+            id: uid('item'),
+            name: 'New item',
+            price: '',
+            description: '',
+            image: '../brand-kit/photos/menu_brisket.jpg'
+          });
+          render();
+        };
+        root.appendChild(wrap);
+      });
+    }
+
+    function itemRow(item, ci, ii) {
+      const el = document.createElement('div');
+      el.className = 'grid md:grid-cols-[8rem_1fr] gap-4 p-4 rounded-xl border border-white/10 bg-black/25';
+      el.innerHTML = `
+        <div>
+          <img class="item-thumb" data-thumb alt="" src="${esc(assetUrl(item.image))}" onerror="this.style.opacity='0.25'">
+        </div>
+        <div class="grid md:grid-cols-2 gap-3">
+          <div>
+            <label class="field-label">Name</label>
+            <input class="field" data-f="name" value="${esc(item.name || '')}" />
+          </div>
+          <div>
+            <label class="field-label">Price</label>
+            <input class="field" data-f="price" value="${esc(item.price || '')}" placeholder="e.g. 14" />
+          </div>
+          <div class="md:col-span-2">
+            <label class="field-label">Description</label>
+            <textarea class="field" data-f="description" rows="2">${esc(item.description || '')}</textarea>
+          </div>
+          <div class="md:col-span-2">
+            <label class="field-label">Image path or URL</label>
+            <input class="field" data-f="image" value="${esc(item.image || '')}" />
+          </div>
+          <div class="md:col-span-2 flex justify-end">
+            <button class="btn-danger" data-del-item type="button">Remove item</button>
+          </div>
+        </div>
+      `;
+      const thumb = el.querySelector('[data-thumb]');
+      el.querySelectorAll('[data-f]').forEach(inp => {
+        inp.addEventListener('input', () => {
+          item[inp.dataset.f] = inp.value;
+          if (inp.dataset.f === 'image') {
+            thumb.src = assetUrl(inp.value);
+            thumb.style.opacity = '1';
+          }
+        });
+      });
+      el.querySelector('[data-del-item]').onclick = () => {
+        menu.categories[ci].items.splice(ii, 1);
+        render();
+      };
+      return el;
+    }
+
+    async function loadMenu() {
+      menu = { categories: [] };
+      try {
+        if (token && API) {
+          menu = await api('/menu');
+        } else {
+          const res = await fetch('/data/menu.json?t=' + Date.now(), { cache: 'no-store' });
+          if (!res.ok) throw new Error('Menu file missing');
+          menu = await res.json();
+        }
+      } catch (e) {
+        if (token && API) {
+          const res = await fetch('/data/menu.json?t=' + Date.now(), { cache: 'no-store' });
+          if (res.ok) menu = await res.json();
+          else throw e;
+        } else {
+          throw e;
+        }
+      }
+      if (!menu.categories) menu.categories = [];
+      render();
+      const nItems = menu.categories.reduce((s, c) => s + (c.items || []).length, 0);
+      setStatus('Loaded ' + menu.categories.length + ' categories · ' + nItems + ' items', true);
+    }
+
+    async function saveMenu() {
+      setStatus('Publishing…');
+      menu.updatedAt = new Date().toISOString();
+      const out = await api('/menu', { method: 'PUT', body: JSON.stringify(menu) });
+      const nItems = menu.categories.reduce((s, c) => s + (c.items || []).length, 0);
+      setStatus(
+        'Published ' + nItems + ' items in ' + menu.categories.length + ' categories · ' + new Date().toLocaleString(),
+        true
+      );
+      return out;
+    }
+
+    $('login-btn').onclick = async () => {
+      const password = $('password').value;
+      $('login-error').classList.add('hidden');
+      try {
+        if (!API) throw new Error('CMS API URL not configured');
+        const data = await api('/login', { method: 'POST', body: JSON.stringify({ password }) });
+        token = data.token;
+        sessionStorage.setItem('mtsCmsToken', token);
+        loginEl.classList.add('hidden');
+        appEl.classList.remove('hidden');
+        await loadMenu();
+      } catch (e) {
+        $('login-error').textContent = e.message;
+        $('login-error').classList.remove('hidden');
+      }
+    };
+
+    $('password').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') $('login-btn').click();
+    });
+
+    appEl.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+      if (btn.dataset.action === 'save') saveMenu().catch(err => setStatus(err.message, false));
+      if (btn.dataset.action === 'reload') loadMenu().catch(err => setStatus(err.message, false));
+    });
+    $('add-category').onclick = () => {
+      menu.categories.push({ id: uid('cat'), name: 'New Category', items: [] });
+      render();
+    };
+
+    if (token && API) {
+      loginEl.classList.add('hidden');
+      appEl.classList.remove('hidden');
+      loadMenu().catch(() => {
+        sessionStorage.removeItem('mtsCmsToken');
+        token = '';
+        loginEl.classList.remove('hidden');
+        appEl.classList.add('hidden');
+      });
+    }
+  </script>
+</body>
+</html>

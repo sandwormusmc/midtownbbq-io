@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midtown Smokehouse | Catering</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --accent-yellow: #F5D000;
+            --flame-orange: #FF5F00;
+            --charcoal: #161412;
+            --surface-glass: rgba(22, 20, 18, 0.94);
+        }
+        html {
+            height: 100%;
+        }
+        body {
+            background-color: var(--charcoal);
+            color: white;
+            font-family: sans-serif;
+            margin: 0;
+            min-height: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .page-content {
+            position: relative;
+            flex: 1 0 auto;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        /* Do not flex-grow main/story — that stretches the fade into the footer */
+        .page-content > main,
+        .page-content > section.story-band {
+            flex: 0 0 auto;
+        }
+        .hero-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('../brand-kit/photos/hero_smoked_meats.jpg') center/cover no-repeat;
+            filter: brightness(0.6);
+            z-index: -2;
+        }
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 20%, rgba(22,20,18,0.6) 60%, rgba(22,20,18,0.92) 100%);
+            z-index: -1;
+        }
+        .bg-surface-glass {
+            background-color: rgba(22, 20, 18, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .btn-primary {
+            background-color: var(--flame-orange);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: opacity 0.2s;
+        }
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+        .site-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 1.25rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,.8), transparent);
+        }
+        .site-nav-links {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(0.55rem, 1.8vw, 1.35rem);
+            white-space: nowrap;
+            max-width: 100%;
+        }
+        .nav-home {
+            display: inline-flex;
+            align-items: center;
+            flex: 0 0 auto;
+            margin-right: clamp(0.15rem, 1vw, 0.45rem);
+            text-decoration: none;
+        }
+        .nav-logo {
+            display: block;
+            height: 1.85rem;
+            width: auto;
+            max-width: 8.5rem;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 10px rgba(0,0,0,.65));
+        }
+        @media (min-width: 768px) {
+            .nav-logo { height: 2.15rem; max-width: 10rem; }
+        }
+        .nav-link {
+            color: #fff;
+            font-size: clamp(0.95rem, 2.8vw, 1.35rem);
+            font-weight: 900;
+            font-style: normal;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            text-decoration: none;
+            text-transform: uppercase;
+            text-shadow: 0 2px 12px rgba(0,0,0,.9);
+            white-space: nowrap;
+            flex: 0 0 auto;
+            transition: color 0.2s;
+        }
+        .nav-link .y { color: var(--accent-yellow); }
+        .nav-link:hover { color: var(--accent-yellow); }
+        .nav-link:hover .y { color: #fff; }
+        .nav-link.is-active { color: var(--accent-yellow); }
+        .nav-link.is-active .y { color: #fff; }
+        .text-accent-yellow { color: var(--accent-yellow); }
+        .y { color: var(--accent-yellow); }
+        /* Shared display type — matches Born in Smoke / Our Heritage */
+        .page-title,
+        .section-title {
+          margin: 0 0 .55rem;
+          font-size: clamp(1.85rem, 6vw, 3.1rem);
+          font-weight: 900;
+          font-style: italic;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          text-shadow: 0 2px 12px rgba(0,0,0,.9);
+        }
+        .section-title {
+          font-size: clamp(1.45rem, 4.5vw, 2.35rem);
+        }
+        .section-eyebrow {
+          margin: 0 0 .55rem;
+          color: var(--accent-yellow);
+          font-size: clamp(0.85rem, 2vw, 1.05rem);
+          font-weight: 900;
+          font-style: italic;
+          letter-spacing: -0.03em;
+          line-height: 1.1;
+          text-transform: uppercase;
+          text-shadow: 0 1px 8px rgba(0,0,0,.9);
+        }
+        .page-body {
+          margin: 0 0 1.25rem;
+          color: #d1d5db;
+          font-size: clamp(.9rem, 2.2vw, 1.05rem);
+          line-height: 1.45;
+          text-shadow: 0 1px 8px rgba(0,0,0,.9);
+        }
+        .page-body:last-child { margin-bottom: 0; }
+        .page-lede {
+          margin: 0 auto;
+          max-width: 28rem;
+          color: #d1d5db;
+          font-size: clamp(.9rem, 2.2vw, 1.05rem);
+          line-height: 1.45;
+          text-shadow: 0 1px 8px rgba(0,0,0,.9);
+        }
+        .tier-title {
+          margin: 0 0 1rem;
+          font-size: clamp(1.25rem, 3.2vw, 1.65rem);
+          font-weight: 900;
+          font-style: italic;
+          letter-spacing: -0.03em;
+          line-height: 1.1;
+          text-shadow: 0 2px 12px rgba(0,0,0,.9);
+        }
+        .tier-body {
+          margin: 0 0 1.5rem;
+          color: #d1d5db;
+          font-size: clamp(.85rem, 2vw, .95rem);
+          line-height: 1.45;
+          text-shadow: 0 1px 8px rgba(0,0,0,.9);
+          flex-grow: 1;
+        }
+        .tier-list {
+          margin: 0 0 1.5rem;
+          padding: 0;
+          list-style: none;
+          display: flex;
+          flex-direction: column;
+          gap: 0.55rem;
+          color: #d1d5db;
+          font-size: clamp(.85rem, 2vw, .95rem);
+          line-height: 1.4;
+          text-shadow: 0 1px 8px rgba(0,0,0,.9);
+        }
+        .tier-note {
+          margin: 0;
+          text-align: center;
+          color: rgba(209, 213, 219, 0.45);
+          font-size: 0.75rem;
+          font-style: italic;
+        }
+        .form-label {
+          display: block;
+          margin: 0 0 0.4rem;
+          color: rgba(209, 213, 219, 0.55);
+          font-size: 0.72rem;
+          font-weight: 900;
+          font-style: italic;
+          letter-spacing: -0.02em;
+          text-transform: uppercase;
+          text-shadow: 0 1px 8px rgba(0,0,0,.85);
+        }
+
+        input, textarea {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 12px;
+            border-radius: 4px;
+            width: 100%;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-yellow);
+        }
+
+        /* Background fade: clear at top, charcoal to the footer */
+        .bg-fade {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          pointer-events: none;
+          background: linear-gradient(
+            to bottom,
+            rgba(22, 20, 18, 0) 0%,
+            rgba(22, 20, 18, 0) 14%,
+            rgba(22, 20, 18, 0.5) 42%,
+            rgba(22, 20, 18, 0.78) 75%,
+            #0b0b0b 100%
+          );
+
+        }
+        .page-content > *:not(.bg-fade) {
+          position: relative;
+          z-index: 1;
+        }
+
+.story-media {
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+        }
+        .story-media-frame {
+          width: min(100%, 18.5rem);
+          background: rgba(22, 20, 18, 0.55);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 1rem;
+          padding: 0.7rem;
+          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+        }
+        .story-media-frame img {
+          display: block;
+          width: 100%;
+          height: 14rem;
+          object-fit: cover;
+          border-radius: 0.65rem;
+        }
+        .site-footer {
+          position: relative;
+          z-index: 10;
+          flex-shrink: 0;
+          margin-top: auto;
+          padding: 0.55rem 0.75rem calc(0.55rem + env(safe-area-inset-bottom, 0px));
+          background: #0b0b0b;
+          border-top: 1px solid rgba(255, 95, 0, 0.35);
+        }
+        .site-footer-inner {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: center;
+          gap: 0.35rem 0.75rem;
+          color: #FF5F00;
+          font-size: 0.68rem;
+          font-weight: 700;
+          letter-spacing: 0.03em;
+          line-height: 1.2;
+        }
+        .site-footer-copy { white-space: nowrap; }
+        .site-footer-social {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.55rem;
+        }
+        .site-footer-social a {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 1.1rem;
+          height: 1.1rem;
+          color: #FF5F00;
+          text-decoration: none;
+          transition: color 0.15s ease;
+        }
+        .site-footer-social a:hover { color: #FF8A3D; }
+        .site-footer-social svg {
+          width: 100%;
+          height: 100%;
+          fill: currentColor;
+          display: block;
+        }
+        .site-footer-inner .footer-maps-link {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 1.1rem;
+          height: 1.1rem;
+          color: #FF5F00;
+          text-decoration: none;
+          transition: color 0.15s ease;
+        }
+        .site-footer-inner .footer-maps-link:hover {
+          color: #FF8A3D;
+        }
+        .site-footer-inner .footer-maps-link svg {
+          width: 100%;
+          height: 100%;
+          fill: currentColor;
+          display: block;
+        }
+
+    
+        .catering-featured {
+          position: relative;
+          transform: none;
+          padding-top: 0.75rem;
+        }
+        @media (min-width: 768px) {
+          .catering-featured {
+            transform: translateY(-1rem);
+            padding-top: 0.85rem;
+          }
+        }
+        .catering-badge {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 5;
+          background: var(--flame-orange);
+          color: #fff;
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          padding: 0.35rem 0.85rem;
+          border-radius: 999px;
+          white-space: nowrap;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+          pointer-events: none;
+        }
+
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <div class="hero-bg"></div>
+    <div class="vignette"></div>
+
+    <nav class="site-nav">
+        <div class="site-nav-links">
+            <a href="/" class="nav-home" aria-label="Midtown Smokehouse home"><img class="nav-logo" src="../brand-kit/logos/primary_logo_lockup_sm.png" alt="Midtown Smokehouse"></a>
+            <a href="menu.html" class="nav-link">MENU<span class="y">.</span></a>
+            <a href="about.html" class="nav-link">OUR <span class="y">STORY.</span></a>
+            <a href="location.html" class="nav-link">LOCATION<span class="y">.</span></a>
+            <a href="catering.html" class="nav-link is-active">CATERING<span class="y">.</span></a>
+        </div>
+    </nav>
+
+    <div class="page-content">
+    <div class="bg-fade" aria-hidden="true"></div>
+
+    <!-- Content -->
+    <main class="relative flex-grow pt-32 pb-24 px-6">
+        <div class="max-w-5xl mx-auto">
+            <header class="mb-16 text-center">
+                <h1 class="page-title">CATERING<span class="y">.</span></h1>
+                <p class="page-lede">Bring the smoke to your next event.</p>
+            </header>
+
+            <!-- Package Tiers -->
+            <section class="grid md:grid-cols-3 gap-8 mb-24 pt-8 overflow-visible">
+                <!-- Tier 1 -->
+                <div class="bg-surface-glass p-8 rounded-2xl border border-white/10 flex flex-col">
+                    <h3 class="section-eyebrow">The <span class="y">Pitmaster.</span></h3>
+                    <h4 class="tier-title">Small <span class="y">Gathering.</span></h4>
+                    <p class="tier-body">Perfect for office lunches or family get-togethers (Up to 15 people).</p>
+                    <ul class="tier-list">
+                        <li>✓ 2 Protein Selection</li>
+                        <li>✓ 2 Signature Sides</li>
+                        <li>✓ Artisan Rolls &amp; Butter</li>
+                        <li>✓ BBQ Sauce Flight</li>
+                    </ul>
+                    <p class="tier-note">Inquire for pricing</p>
+                </div>
+
+                <!-- Tier 2 -->
+                <div class="catering-featured">
+                    <div class="catering-badge">Most Popular</div>
+                    <div class="bg-surface-glass p-8 pt-10 rounded-2xl border-2 border-flame-orange flex flex-col h-full">
+                        <h3 class="section-eyebrow">The <span class="y">Smokehouse.</span></h3>
+                        <h4 class="tier-title">Celebration<span class="y">.</span></h4>
+                        <p class="tier-body">Our signature spread for parties and reunions (20-50 people).</p>
+                        <ul class="tier-list">
+                            <li>✓ 3 Protein Selection</li>
+                            <li>✓ 3 Signature Sides</li>
+                            <li>✓ Full Salad Station</li>
+                            <li>✓ Artisan Rolls &amp; Butter</li>
+                            <li>✓ BBQ Sauce Flight</li>
+                        </ul>
+                        <p class="tier-note">Inquire for pricing</p>
+                    </div>
+                </div>
+
+                <!-- Tier 3 -->
+                <div class="bg-surface-glass p-8 rounded-2xl border border-white/10 flex flex-col">
+                    <h3 class="section-eyebrow">The <span class="y">Legend.</span></h3>
+                    <h4 class="tier-title">Large <span class="y">Event.</span></h4>
+                    <p class="tier-body">Massive spreads for weddings and corporate galas (50+ people).</p>
+                    <ul class="tier-list">
+                        <li>✓ Custom Protein Mix</li>
+                        <li>✓ Full Side Selection</li>
+                        <li>✓ Full Salad &amp; Veggie Station</li>
+                        <li>✓ Dedicated Service Staff</li>
+                        <li>✓ Custom Branding Options</li>
+                    </ul>
+                    <p class="tier-note">Inquire for pricing</p>
+                </div>
+            </section>
+
+            <!-- Inquiry Form -->
+            <section class="bg-surface-glass p-8 md:p-16 rounded-3xl border border-white/10 max-w-3xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="section-title">Plan Your <span class="y">Event.</span></h2>
+                    <p class="page-lede">Fill out the form below and our catering lead will get back to you within 24 hours.</p>
+                </div>
+                <form class="space-y-6" onsubmit="event.preventDefault(); alert('This is a mockup form. No data was sent.');">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="form-label">Full Name</label>
+                            <input type="text" placeholder="" autocomplete="name" required>
+                        </div>
+                        <div>
+                            <label class="form-label">Email Address</label>
+                            <input type="email" placeholder="" autocomplete="email" required>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="form-label">Event Date</label>
+                            <input type="date" required>
+                        </div>
+                        <div>
+                            <label class="form-label">Guest Count</label>
+                            <input type="number" placeholder="" inputmode="numeric" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="form-label">Special Requests / Details</label>
+                        <textarea rows="4" placeholder="Tell us about your event, dietary needs, or specific meat preferences..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full btn-primary py-4 text-lg">Send Inquiry</button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <span class="site-footer-copy">&copy; 2026 Midtown Smokehouse, LLC</span>
+            <nav class="site-footer-social" aria-label="Social">
+                <a href="https://www.instagram.com/midtown.s.house/" target="_blank" rel="noopener" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4c0 3.2-2.6 5.8-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8C2 4.6 4.6 2 7.8 2zm-.2 2C5.7 4 4 5.7 4 7.6v8.8C4 18.3 5.7 20 7.6 20h8.8c1.9 0 3.6-1.7 3.6-3.6V7.6C20 5.7 18.3 4 16.4 4H7.6zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.5-3.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/></svg>
+                </a>
+                <a href="https://www.facebook.com/Marhabagrillfarmington/" target="_blank" rel="noopener" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v7h3v-7h3.1l.9-3H13v-2c0-.6.4-1 1-1z"/></svg>
+                </a>
+                <a class="footer-maps-link" href="https://www.google.com/maps/search/?api=1&query=26056+W+12+Mile+Rd,+Southfield,+MI+48034" target="_blank" rel="noopener" aria-label="26056 W 12 Mile Rd, Southfield, MI 48034">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                </a>
+            </nav>
+        </div>
+    </footer>
+</body>
+</html>

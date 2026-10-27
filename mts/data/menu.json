@@ -1,0 +1,335 @@
+{
+  "updatedAt": "2026-10-16T04:41:26Z",
+  "sourceNote": "Seeded from public Midtown Smokehouse menu listings + Google review mentions for owner demo. Confirm prices on-site.",
+  "categories": [
+    {
+      "id": "sandwiches",
+      "name": "Sandwiches",
+      "layout": "rows",
+      "items": [
+        {
+          "id": "sliced-beef-sandwich",
+          "name": "Sliced Beef Sandwich",
+          "price": "5.49",
+          "description": "Hearty sandwich on a warm bun with chips, pickles, and onions. Extra meat +$1.29.",
+          "image": "../brand-kit/photos/menu_brisket.jpg"
+        },
+        {
+          "id": "chopped-beef-sandwich",
+          "name": "Chopped Beef Sandwich",
+          "price": "5.49",
+          "description": "Chopped smoked beef on a warm bun with chips, pickles, and onions.",
+          "image": "../brand-kit/photos/menu_chopped_beef.jpg"
+        },
+        {
+          "id": "chopped-pork-sandwich",
+          "name": "Chopped Pork Sandwich",
+          "price": "5.49",
+          "description": "Chopped smoked pork on a warm bun with chips, pickles, and onions.",
+          "image": "../brand-kit/photos/menu_pork_sandwich.jpg"
+        },
+        {
+          "id": "smoked-sausage-sandwich",
+          "name": "Smoked Sausage Sandwich",
+          "price": "5.49",
+          "description": "Smoked sausage on a warm bun with chips, pickles, and onions.",
+          "image": "../brand-kit/photos/menu_sausage.jpg"
+        },
+        {
+          "id": "chicken-leg-quarter-sandwich",
+          "name": "Chicken Leg Quarter Sandwich",
+          "price": "5.49",
+          "description": "Smoked chicken leg quarter on a warm bun with chips, pickles, and onions.",
+          "image": "../brand-kit/photos/menu_chicken_sandwich.jpg"
+        },
+        {
+          "id": "brisket-grilled-cheese",
+          "name": "Brisket Grilled Cheese",
+          "price": "8.99",
+          "description": "Guest favorite from recent reviews \u2014 tender brisket in a grilled cheese.",
+          "image": "../brand-kit/photos/menu_brisket_grilled_cheese.jpg"
+        }
+      ]
+    },
+    {
+      "id": "dinner-plates",
+      "name": "Dinner Plates",
+      "layout": "rows",
+      "items": [
+        {
+          "id": "meat-plate",
+          "name": "Meat Plate",
+          "price": "10.79",
+          "description": "Your choice of sliced brisket, pork roast, ribs, sausage, or chicken leg quarter \u2014 with 2 sides, bread, pickles, and onions.",
+          "image": "../brand-kit/photos/menu_meat_plate.jpg"
+        },
+        {
+          "id": "midtown-deluxe-platter",
+          "name": "Midtown Deluxe Platter",
+          "price": "12.99",
+          "description": "Ribs, brisket, pork roast, and sausage with 3 sides, bread, pickles, and onions.",
+          "image": "../brand-kit/photos/menu_meat_plate.jpg"
+        },
+        {
+          "id": "rib-tips",
+          "name": "Rib Tips",
+          "price": "11.99",
+          "description": "Smoky, tender rib tips \u2014 a house favorite called out in Google reviews.",
+          "image": "../brand-kit/photos/menu_rib_tips.jpg"
+        }
+      ]
+    },
+    {
+      "id": "by-the-pound",
+      "name": "By the Pound",
+      "layout": "rows",
+      "items": [
+        {
+          "id": "ribs-lb",
+          "name": "Ribs (lb)",
+          "price": "11.99",
+          "description": "Pound for pound \u2014 smoked ribs.",
+          "image": "../brand-kit/photos/menu_ribs.jpg"
+        },
+        {
+          "id": "brisket-lb",
+          "name": "Brisket (lb)",
+          "price": "11.99",
+          "description": "Sliced smoked brisket by the pound.",
+          "image": "../brand-kit/photos/menu_brisket.jpg"
+        },
+        {
+          "id": "sausage-lb",
+          "name": "Sausage (lb)",
+          "price": "9.99",
+          "description": "Smoked sausage by the pound.",
+          "image": "../brand-kit/photos/menu_sausage.jpg"
+        },
+        {
+          "id": "pork-roast-lb",
+          "name": "Pork Roast (lb)",
+          "price": "9.99",
+          "description": "Sliced smoked pork roast by the pound.",
+          "image": "../brand-kit/photos/menu_pork_roast.jpg"
+        },
+        {
+          "id": "chicken-quarters-lb",
+          "name": "Chicken Quarters (lb)",
+          "price": "9.99",
+          "description": "Smoked chicken quarters by the pound.",
+          "image": "../brand-kit/photos/menu_chicken_sandwich.jpg"
+        }
+      ]
+    },
+    {
+      "id": "stuffed-potatoes",
+      "name": "Stuffed Potatoes",
+      "layout": "cards",
+      "items": [
+        {
+          "id": "naked-potato",
+          "name": "Naked Potato",
+          "price": "3.29",
+          "description": "Large baked potato with butter.",
+          "image": "../brand-kit/photos/menu_baked_potato.jpg"
+        },
+        {
+          "id": "plain-potato",
+          "name": "Plain Potato",
+          "price": "3.99",
+          "description": "Baked potato with butter & sour cream.",
+          "image": "../brand-kit/photos/menu_baked_potato.jpg"
+        },
+        {
+          "id": "loaded-potato",
+          "name": "Loaded Potato",
+          "price": "4.99",
+          "description": "Butter, sour cream, bacon, cheddar, chives.",
+          "image": "../brand-kit/photos/menu_baked_potato.jpg"
+        },
+        {
+          "id": "midtown-potato",
+          "name": "Midtown Potato",
+          "price": "6.99",
+          "description": "Loaded potato with your choice of chopped beef, pork, or smoked sausage.",
+          "image": "../brand-kit/photos/menu_midtown_potato.jpg"
+        }
+      ]
+    },
+    {
+      "id": "combos",
+      "name": "Combos",
+      "layout": "rows",
+      "items": [
+        {
+          "id": "combo-1",
+          "name": "Combo 1",
+          "price": "7.29",
+          "description": "Sandwich, 1 side, soda.",
+          "image": "../brand-kit/photos/menu_meat_plate.jpg"
+        },
+        {
+          "id": "combo-2",
+          "name": "Combo 2",
+          "price": "9.79",
+          "description": "Sandwich, side, dessert, soda.",
+          "image": "../brand-kit/photos/menu_meat_plate.jpg"
+        },
+        {
+          "id": "combo-3",
+          "name": "Combo 3",
+          "price": "9.99",
+          "description": "Midtown potato, dessert, soda.",
+          "image": "../brand-kit/photos/menu_midtown_potato.jpg"
+        },
+        {
+          "id": "combo-4",
+          "name": "Combo 4",
+          "price": "10.89",
+          "description": "1 meat plate, dessert, soda.",
+          "image": "../brand-kit/photos/menu_meat_plate.jpg"
+        },
+        {
+          "id": "combo-5",
+          "name": "Family Combo",
+          "price": "27.49",
+          "description": "Feeds a family of four \u2014 2 lbs of your choice of 2 meats plus two 16 oz sides.",
+          "image": "../brand-kit/photos/menu_meat_plate.jpg"
+        }
+      ]
+    },
+    {
+      "id": "sides",
+      "name": "Sides",
+      "layout": "cards",
+      "items": [
+        {
+          "id": "mac-and-cheese",
+          "name": "Macaroni & Cheese",
+          "price": "3.99",
+          "description": "Homemade mac & cheese (16 oz).",
+          "image": "../brand-kit/photos/menu_mac_and_cheese.jpg"
+        },
+        {
+          "id": "bbq-baked-beans",
+          "name": "Bar-B-Que Baked Beans",
+          "price": "3.99",
+          "description": "Smoky homemade baked beans (16 oz).",
+          "image": "../brand-kit/photos/menu_beans.jpg"
+        },
+        {
+          "id": "coleslaw",
+          "name": "Coleslaw",
+          "price": "3.99",
+          "description": "Fresh, crisp coleslaw (16 oz).",
+          "image": "../brand-kit/photos/menu_slaw.jpg"
+        },
+        {
+          "id": "potato-salad",
+          "name": "Potato Salad",
+          "price": "3.99",
+          "description": "Homemade potato salad (16 oz).",
+          "image": "../brand-kit/photos/menu_potato_salad.jpg"
+        },
+        {
+          "id": "moms-creamy-corn",
+          "name": "Mom's Creamy Corn",
+          "price": "3.99",
+          "description": "Creamy corn side (16 oz).",
+          "image": "../brand-kit/photos/menu_creamy_corn.jpg"
+        },
+        {
+          "id": "bbq-sauce",
+          "name": "Bar-B-Que Sauce",
+          "price": "3.99",
+          "description": "House BBQ sauce (16 oz).",
+          "image": "../brand-kit/photos/menu_bbq_sauce.jpg"
+        }
+      ]
+    },
+    {
+      "id": "boudin",
+      "name": "Boudin",
+      "layout": "cards",
+      "items": [
+        {
+          "id": "smoked-boudin",
+          "name": "Smoked Boudin",
+          "price": "4.49",
+          "description": "Smoked boudin served with crackers, pickles, and onions.",
+          "image": "../brand-kit/photos/menu_boudin.jpg"
+        }
+      ]
+    },
+    {
+      "id": "desserts",
+      "name": "Desserts",
+      "layout": "cards",
+      "items": [
+        {
+          "id": "german-chocolate-cake",
+          "name": "German Chocolate Cake",
+          "price": "2.99",
+          "description": "Grandma's homemade German chocolate cake.",
+          "image": "../brand-kit/photos/menu_chocolate_cake.jpg"
+        },
+        {
+          "id": "sock-it-to-me-cake",
+          "name": "Sock It To Me Cake",
+          "price": "2.99",
+          "description": "Homemade sock-it-to-me cake.",
+          "image": "../brand-kit/photos/menu_chocolate_cake.jpg"
+        },
+        {
+          "id": "cheesecake-brownie",
+          "name": "Cheesecake Brownie",
+          "price": "1.99",
+          "description": "Cheesecake brownie.",
+          "image": "../brand-kit/photos/menu_brownie.jpg"
+        },
+        {
+          "id": "lemon-teacakes",
+          "name": "Lemon Teacakes (2)",
+          "price": "1.75",
+          "description": "Two lemon teacakes.",
+          "image": "../brand-kit/photos/menu_brownie.jpg"
+        }
+      ]
+    },
+    {
+      "id": "drinks",
+      "name": "Drinks",
+      "layout": "cards",
+      "items": [
+        {
+          "id": "cans-of-soda",
+          "name": "Can of Soda",
+          "price": "0.75",
+          "description": "Assorted canned soda.",
+          "image": "../brand-kit/photos/menu_soda_can.jpg"
+        },
+        {
+          "id": "bottled-water",
+          "name": "Bottled Water",
+          "price": "0.99",
+          "description": "Bottled water.",
+          "image": "../brand-kit/photos/menu_water_bottle.jpg"
+        },
+        {
+          "id": "house-sweet-tea",
+          "name": "House Sweet Tea",
+          "price": "2.99",
+          "description": "Brewed fresh daily.",
+          "image": "../brand-kit/photos/menu_sweet_tea.jpg"
+        },
+        {
+          "id": "fresh-lemonade",
+          "name": "Fresh Lemonade",
+          "price": "3.25",
+          "description": "Fresh-squeezed lemonade.",
+          "image": "../brand-kit/photos/menu_lemonade.jpg"
+        }
+      ]
+    }
+  ]
+}

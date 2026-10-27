@@ -1,0 +1,16 @@
+# OS / editor artefacts
+.DS_Store
+Thumbs.db
+*.log
+node_modules/
+tmp/
+*.tmp
+*.swp
+
+# AWS / cloud‑cli artefacts
+.aws/
+*.pem
+
+# Sensitive local files (do NOT commit)
+~/.wp-app-password
+mts/.cms-password

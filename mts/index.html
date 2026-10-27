@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midtown Smokehouse | Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --accent-yellow: #F5D000;
+            --flame-orange: #FF5F00;
+            --charcoal: #161412;
+            --surface-glass: rgba(22, 20, 18, 0.94);
+            --blur-frost: 8px;
+            --btn-orange: rgba(255, 95, 0, 0.88);
+            --btn-orange-hover: rgba(255, 95, 0, 0.96);
+            /* viewport + progress + pinned footer + safe bottom */
+            --site-footer-h: calc(2.15rem + env(safe-area-inset-bottom, 0px));
+            --menu-slider-h: calc(clamp(7.5rem, 18vh, 11.5rem) + 2.1rem + var(--site-footer-h));
+        }
+        html {
+            height: 100%;
+        }
+        body {
+            background-color: var(--charcoal);
+            color: white;
+            font-family: sans-serif;
+            margin: 0;
+            min-height: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .page-content {
+            flex: 1 0 auto;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        /* Do not flex-grow main/story — that stretches the fade into the footer */
+        .page-content > main,
+        .page-content > section.story-band {
+            flex: 0 0 auto;
+        }
+        .hero-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('brand-kit/photos/hero_smoked_meats.jpg') center/cover no-repeat;
+            filter: brightness(0.82);
+            z-index: -2;
+        }
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 20%, rgba(22,20,18,0.6) 60%, rgba(22,20,18,0.92) 100%);
+            z-index: -1;
+        }
+        .bg-surface-glass {
+            background-color: var(--surface-glass);
+            backdrop-filter: blur(8px);
+        }
+        .btn-cta,
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            background: var(--btn-orange);
+            border: 0;
+            border-radius: 16px;
+            padding: 0.85rem 1.25rem;
+            font-weight: 900;
+            font-size: .875rem;
+            letter-spacing: -0.03em;
+            text-transform: uppercase;
+            text-decoration: none;
+            box-shadow: none;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+        .btn-cta:hover,
+        .btn-primary:hover {
+            background: var(--btn-orange-hover);
+        }
+        .btn-cta:active,
+        .btn-primary:active {
+            transform: scale(.98);
+        }
+        .hero-logo {
+            display: block;
+            width: min(100%, 18rem);
+            height: auto;
+            margin: 0 auto 2.75rem;
+            object-fit: contain;
+            filter: drop-shadow(0 0 16px rgba(255,95,0,.45)) drop-shadow(0 4px 12px rgba(0,0,0,.45));
+        }
+        .site-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 1.25rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,.8), transparent);
+        }
+        .site-nav-links {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(0.55rem, 1.8vw, 1.35rem);
+            white-space: nowrap;
+            max-width: 100%;
+        }
+        .nav-home {
+            display: inline-flex;
+            align-items: center;
+            flex: 0 0 auto;
+            margin-right: clamp(0.15rem, 1vw, 0.45rem);
+            text-decoration: none;
+        }
+        .nav-logo {
+            display: block;
+            height: 1.85rem;
+            width: auto;
+            max-width: 8.5rem;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 10px rgba(0,0,0,.65));
+        }
+        @media (min-width: 768px) {
+            .nav-logo { height: 2.15rem; max-width: 10rem; }
+        }
+        .nav-link {
+            color: #fff;
+            font-size: clamp(0.95rem, 2.8vw, 1.35rem);
+            font-weight: 900;
+            font-style: normal;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            text-decoration: none;
+            text-transform: uppercase;
+            text-shadow: 0 2px 12px rgba(0,0,0,.9);
+            white-space: nowrap;
+            flex: 0 0 auto;
+            transition: color 0.2s;
+        }
+        .nav-link .y { color: var(--accent-yellow); }
+        .nav-link:hover {
+            color: var(--accent-yellow);
+        }
+        .nav-link:hover .y {
+            color: #fff;
+        }
+        .text-accent-yellow { color: var(--accent-yellow); }
+        .y { color: var(--accent-yellow); }
+        .hero-stage {
+            /* Fill viewport above fixed slider so heritage starts tucked under it until scroll */
+            min-height: calc(100vh - var(--menu-slider-h));
+            min-height: calc(100dvh - var(--menu-slider-h));
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: flex-start;
+            text-align: center;
+            padding: 3.75rem 0 0;
+            box-sizing: border-box;
+        }
+        .hero-copy {
+            width: min(100%, 26rem);
+            margin: 0 auto;
+            padding: 0.35rem 1rem 0.5rem;
+            box-sizing: border-box;
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        /* Shared display type — Born in Smoke + Our Heritage */
+        .hero-copy h1,
+        .story-copy h2 {
+            margin: 0 0 .55rem;
+            font-size: clamp(1.85rem, 6vw, 3.1rem);
+            font-weight: 900;
+            font-style: italic;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            text-shadow: 0 2px 12px rgba(0,0,0,.9);
+        }
+        .hero-copy p,
+        .story-copy > p {
+            margin: 0;
+            color: #d1d5db;
+            font-size: clamp(.9rem, 2.2vw, 1.05rem);
+            line-height: 1.45;
+            text-shadow: 0 1px 8px rgba(0,0,0,.9);
+            max-width: 28rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* Story starts under fixed slider; scroll reveals it */
+        .story-band {
+          background: transparent;
+          padding-top: 1.75rem;
+          /* Scroll ballast equal to dock — sits under fixed chrome, not a visible gap */
+          padding-bottom: var(--menu-slider-h);
+        }
+        .story-band::before {
+          content: none; /* was a translucent panel behind heritage copy */
+        }
+        .story-band > * {
+          position: relative;
+          z-index: 1;
+        }
+        .story-copy {
+          width: min(100%, 26rem);
+          margin: 0 auto;
+          padding: 0;
+          box-sizing: border-box;
+          text-align: center;
+          background: transparent;
+        }
+        .story-copy > p {
+          margin-bottom: 1.25rem;
+        }
+        .story-cta {
+          color: #fff;
+          font-weight: 800;
+          font-size: clamp(.9rem, 2.2vw, 1.05rem);
+          letter-spacing: -0.02em;
+          text-decoration: none;
+          border-bottom: 2px solid var(--flame-orange);
+          padding-bottom: 0.15rem;
+          text-shadow: 0 1px 8px rgba(0,0,0,.85);
+          transition: color 0.2s ease;
+        }
+        .story-cta:hover { color: var(--accent-yellow); }
+        .menu-band-actions {
+          /* Do not flex-grow — that left a tall empty band between CTAs and heritage on mobile */
+          flex: 0 0 auto;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          align-items: center;
+          justify-content: center;
+          gap: 0.85rem;
+          width: 100%;
+          padding: 1rem 0.75rem 0.65rem;
+          box-sizing: border-box;
+          background: transparent;
+        }
+        .menu-band-actions .hero-text-link {
+          color: #fff;
+          font-size: clamp(1.15rem, 3.5vw, 1.65rem);
+          font-weight: 900;
+          font-style: normal;
+          letter-spacing: -0.03em;
+          line-height: 1.1;
+          text-transform: uppercase;
+          text-decoration: underline;
+          text-decoration-thickness: 0.08em;
+          text-underline-offset: 0.18em;
+          text-shadow:
+            0 2px 12px rgba(0,0,0,.9),
+            0 4px 18px rgba(0,0,0,.65);
+          filter: drop-shadow(0 3px 8px rgba(0,0,0,.55));
+          white-space: nowrap;
+          transition: color 0.2s ease;
+        }
+        .menu-band-actions .hero-text-link .y {
+          color: var(--accent-yellow);
+        }
+        .menu-band-actions .hero-text-link:hover {
+          color: var(--accent-yellow);
+        }
+        .menu-band-actions .hero-text-link:hover .y {
+          color: #fff;
+        }
+        .menu-band-actions .hero-text-sep {
+          color: rgba(255, 255, 255, 0.35);
+          font-size: clamp(1.15rem, 3.5vw, 1.65rem);
+          font-weight: 900;
+          font-style: normal;
+          text-shadow:
+            0 2px 12px rgba(0,0,0,.9),
+            0 4px 18px rgba(0,0,0,.65);
+          filter: drop-shadow(0 3px 8px rgba(0,0,0,.55));
+          user-select: none;
+        }
+        .bottom-dock {
+          position: fixed;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 40;
+          width: 100%;
+          pointer-events: none;
+        }
+        .bottom-dock .menu-slider,
+        .bottom-dock .site-footer {
+          pointer-events: auto;
+        }
+        .menu-slider {
+          position: relative;
+          width: 100%;
+          max-width: none;
+          margin: 0;
+          /* Transparent shell so viewport mask can punch through to hero */
+          background: transparent;
+          border: 0;
+          border-radius: 0;
+          padding: 0;
+          overflow: hidden;
+          box-shadow: none;
+        }
+        .menu-slider-viewport {
+          position: relative;
+          width: 100%;
+          height: clamp(7.5rem, 18vh, 11.5rem);
+          aspect-ratio: auto;
+          border-radius: 0;
+          overflow: hidden;
+          background: transparent;
+          /* Punch through to hero-bg: top fully clear → opaque over ~24px */
+          -webkit-mask-image: linear-gradient(
+            to bottom,
+            transparent 0%,
+            rgba(0, 0, 0, 0.25) 8px,
+            rgba(0, 0, 0, 0.65) 16px,
+            #000 24px
+          );
+          mask-image: linear-gradient(
+            to bottom,
+            transparent 0%,
+            rgba(0, 0, 0, 0.25) 8px,
+            rgba(0, 0, 0, 0.65) 16px,
+            #000 24px
+          );
+          -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+          -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+        }
+        .menu-slide {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          transition: opacity 1.5s ease;
+          pointer-events: none;
+          z-index: 0;
+          background: var(--charcoal);
+          cursor: pointer;
+        }
+        /* Stay fully opaque under the incoming fade — no mid-crossfade see-through */
+        .menu-slide.is-base {
+          opacity: 1;
+          transition: none;
+          z-index: 1;
+        }
+        .menu-slide.is-incoming {
+          z-index: 2;
+        }
+        .menu-slide.is-active {
+          opacity: 1;
+          pointer-events: auto;
+        }
+        .menu-slide img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          background: var(--charcoal);
+        }
+        .menu-slide-meta {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          padding: 1.75rem 0.85rem 0.75rem;
+          background: linear-gradient(to top, rgba(11,11,11,.88), transparent);
+          text-align: left;
+        }
+        .menu-slide-meta strong {
+          display: block;
+          font-size: 1.05rem;
+          font-weight: 900;
+          font-style: italic;
+          letter-spacing: -0.02em;
+        }
+        .menu-slide-meta span {
+          color: var(--accent-yellow);
+          font-weight: 700;
+          font-size: .9rem;
+        }
+        .menu-slider-progress {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          margin-top: 0;
+          padding: 0.45rem 0.85rem;
+          /* Opaque chrome under progress only — keeps scrolled text from showing through */
+          background: var(--charcoal);
+        }
+        .menu-slider-progress-bar {
+          flex: 1;
+          height: 3px;
+          border-radius: 999px;
+          background: rgba(255,255,255,.16);
+          overflow: hidden;
+        }
+        .menu-slider-progress-bar > i {
+          display: block;
+          height: 100%;
+          width: 0%;
+          border-radius: 999px;
+          background: var(--flame-orange);
+          transition: width .35s ease;
+        }
+        .menu-slider-count {
+          flex: 0 0 auto;
+          font-size: .7rem;
+          font-weight: 800;
+          letter-spacing: .08em;
+          color: rgba(255,255,255,.55);
+          font-variant-numeric: tabular-nums;
+          min-width: 3.25rem;
+          text-align: right;
+        }
+        .menu-slider-status {
+          text-align: center;
+          color: rgba(255,255,255,.45);
+          font-size: .85rem;
+          padding: 2rem 0.5rem;
+        }
+        .site-footer {
+          position: relative;
+          z-index: 41;
+          margin: 0;
+          padding: 0.35rem 0.75rem calc(0.35rem + env(safe-area-inset-bottom, 0px));
+          background: #0b0b0b;
+          border-top: 1px solid rgba(255, 95, 0, 0.35);
+        }
+        .site-footer-inner {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: center;
+          gap: 0.35rem 0.75rem;
+          color: #FF5F00;
+          font-size: 0.68rem;
+          font-weight: 700;
+          letter-spacing: 0.03em;
+          line-height: 1.2;
+        }
+        .site-footer-copy {
+          white-space: nowrap;
+        }
+        .site-footer-social {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.55rem;
+        }
+        .site-footer-social a {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 1.1rem;
+          height: 1.1rem;
+          color: #FF5F00;
+          text-decoration: none;
+          transition: color 0.15s ease;
+        }
+        .site-footer-social a:hover {
+          color: #FF8A3D;
+        }
+        .site-footer-social svg {
+          width: 100%;
+          height: 100%;
+          fill: currentColor;
+          display: block;
+        }
+        .site-footer-inner .footer-maps-link {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 1.1rem;
+          height: 1.1rem;
+          color: #FF5F00;
+          text-decoration: none;
+          transition: color 0.15s ease;
+        }
+        .site-footer-inner .footer-maps-link:hover {
+          color: #FF8A3D;
+        }
+        .site-footer-inner .footer-maps-link svg {
+          width: 100%;
+          height: 100%;
+          fill: currentColor;
+          display: block;
+        }
+        .menu-modal-backdrop {
+          position: fixed; inset: 0; z-index: 80;
+          background: rgba(0,0,0,.72);
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
+          display: none; align-items: center; justify-content: center;
+          padding: 1.25rem;
+          touch-action: pan-y;
+        }
+        .menu-modal-backdrop.open { display: flex; }
+        .menu-modal {
+          width: min(100%, 34rem);
+          max-height: min(90vh, 40rem);
+          overflow: auto;
+          background: rgba(22, 20, 18, 0.94);
+          border: 1px solid rgba(255,255,255,.12);
+          border-radius: 1.25rem;
+          box-shadow: 0 24px 60px rgba(0,0,0,.55);
+          position: relative;
+        }
+        .menu-modal img.hero {
+          width: 100%; height: 14rem; object-fit: cover;
+          border-radius: 1.25rem 1.25rem 0 0;
+          display: block;
+          user-select: none;
+          -webkit-user-drag: none;
+        }
+        .menu-modal .body { padding: 1.5rem 1.5rem 1.75rem; }
+        .menu-modal .close-x {
+          position: absolute; top: .85rem; right: .85rem; z-index: 2;
+          width: 2.25rem; height: 2.25rem; border-radius: 999px;
+          border: 1px solid rgba(255,255,255,.2);
+          background: rgba(0,0,0,.45); color: #fff;
+          font-size: 1.25rem; line-height: 1; cursor: pointer;
+        }
+        .menu-modal .nav-arrow {
+          position: absolute; top: 6.5rem; z-index: 2;
+          width: 2.25rem; height: 2.25rem; border-radius: 999px;
+          border: 1px solid rgba(255,255,255,.2);
+          background: rgba(0,0,0,.45); color: #fff;
+          font-size: 1.15rem; line-height: 1; cursor: pointer;
+        }
+        .menu-modal .nav-arrow.prev { left: .75rem; }
+        .menu-modal .nav-arrow.next { right: .75rem; }
+        .menu-modal .page-title {
+          margin: 0;
+          font-size: clamp(1.45rem, 4.5vw, 2.25rem);
+          font-weight: 900;
+          font-style: italic;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          text-shadow: 0 2px 12px rgba(0,0,0,.9);
+        }
+        .btn-primary {
+          display: inline-block;
+          background: var(--btn-orange);
+          color: #fff;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: .06em;
+          padding: 0.85rem 1.25rem;
+          border-radius: 999px;
+          text-decoration: none;
+        }
+        .btn-primary:hover { background: var(--btn-orange-hover); }
+    
+    </style>
+</head>
+<body>
+    <div class="hero-bg"></div>
+    <div class="vignette"></div>
+
+    <!-- Global Chrome: Top Nav -->
+    <nav class="site-nav">
+        <div class="site-nav-links">
+            <a href="/" class="nav-home" aria-label="Midtown Smokehouse home"><img class="nav-logo" src="brand-kit/logos/logo-lockup.png" alt="Midtown Smokehouse"></a>
+            <a href="pages/menu.html" class="nav-link">MENU<span class="y">.</span></a>
+            <a href="pages/about.html" class="nav-link">OUR <span class="y">STORY.</span></a>
+            <a href="pages/location.html" class="nav-link">LOCATION<span class="y">.</span></a>
+            <a href="pages/catering.html" class="nav-link">CATERING<span class="y">.</span></a>
+        </div>
+    </nav>
+
+    <div class="page-content">
+
+    <!-- Hero Section -->
+    <main class="hero-stage">
+        <div class="hero-copy">
+            <img class="hero-logo" src="brand-kit/logos/logo-lockup.png" alt="Midtown Smokehouse">
+            <h1>BORN IN <span class="y">SMOKE.</span></h1>
+            <p>Premium Texas-style BBQ, prepared daily in our custom wood-fired pits.</p>
+        </div>
+        <div class="menu-band-actions">
+            <a href="pages/menu.html" class="hero-text-link">VIEW FULL <span class="y">MENU.</span></a>
+            <span class="hero-text-sep" aria-hidden="true">|</span>
+            <a href="https://mts-order.moldvan.com/#menu" class="hero-text-link">ORDER <span class="y">ONLINE.</span></a>
+        </div>
+    </main>
+
+    <!-- Brand Story Teaser — same display type as Born in Smoke -->
+    <section class="story-band px-6 relative z-10">
+        <div class="story-copy">
+            <h2>OUR <span class="y">HERITAGE.</span></h2>
+            <p>Oak smoked since day one. We don't take shortcuts — from our heavy-duty pits to our signature spice rubs, every bite tells the story of Southfield tradition.</p>
+            <a href="pages/about.html" class="story-cta">Read Our Story →</a>
+        </div>
+    </section>
+
+    </div>
+
+    <div class="bottom-dock">
+    <div class="menu-slider" id="menuSlider" aria-roledescription="carousel" aria-label="Menu highlights">
+        <div class="menu-slider-viewport" id="menuSliderViewport">
+            <p class="menu-slider-status">Loading…</p>
+        </div>
+        <div class="menu-slider-progress" id="menuSliderProgress" hidden>
+          <div class="menu-slider-progress-bar" aria-hidden="true"><i id="menuSliderProgressFill"></i></div>
+          <span class="menu-slider-count" id="menuSliderCount">1 / 1</span>
+        </div>
+    </div>
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <span class="site-footer-copy">&copy; 2026 Midtown Smokehouse, LLC</span>
+            <nav class="site-footer-social" aria-label="Social">
+                <a href="https://www.instagram.com/midtown.s.house/" target="_blank" rel="noopener" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4c0 3.2-2.6 5.8-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8C2 4.6 4.6 2 7.8 2zm-.2 2C5.7 4 4 5.7 4 7.6v8.8C4 18.3 5.7 20 7.6 20h8.8c1.9 0 3.6-1.7 3.6-3.6V7.6C20 5.7 18.3 4 16.4 4H7.6zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.5-3.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/></svg>
+                </a>
+                <a href="https://www.facebook.com/Marhabagrillfarmington/" target="_blank" rel="noopener" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v7h3v-7h3.1l.9-3H13v-2c0-.6.4-1 1-1z"/></svg>
+                </a>
+                <a class="footer-maps-link" href="https://www.google.com/maps/search/?api=1&query=26056+W+12+Mile+Rd,+Southfield,+MI+48034" target="_blank" rel="noopener" aria-label="26056 W 12 Mile Rd, Southfield, MI 48034">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                </a>
+            </nav>
+        </div>
+    </footer>
+    </div>
+
+    <div class="menu-modal-backdrop" id="menu-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+      <div class="menu-modal" id="menuModalSheet">
+        <button type="button" class="close-x" id="modal-close" aria-label="Close">&times;</button>
+        <button type="button" class="nav-arrow prev" id="modal-prev" aria-label="Previous item">‹</button>
+        <button type="button" class="nav-arrow next" id="modal-next" aria-label="Next item">›</button>
+        <img class="hero" id="modal-img" src="" alt="">
+        <div class="body">
+          <div class="flex justify-between items-start gap-4 mb-3">
+            <h2 id="modal-title" class="page-title"></h2>
+            <span id="modal-price" class="text-accent-yellow font-bold text-xl shrink-0"></span>
+          </div>
+          <p id="modal-desc" class="text-white/70 leading-relaxed mb-8"></p>
+          <a id="modal-order" class="btn-primary inline-block text-center w-full" href="#">Order Now</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    (function () {
+      const viewport = document.getElementById('menuSliderViewport');
+      const progressEl = document.getElementById('menuSliderProgress');
+      const progressFill = document.getElementById('menuSliderProgressFill');
+      const countEl = document.getElementById('menuSliderCount');
+      const modal = document.getElementById('menu-modal');
+      if (!viewport || !progressEl || !modal) return;
+
+      const INTERVAL_MS = 4200;
+      const ORDER_BASE = 'https://mts-order.moldvan.com/';
+      let items = [];
+      let index = 0;
+      let timer = null;
+      let modalIndex = 0;
+      let touchStartX = null;
+
+      function esc(s) {
+        return String(s ?? '').replace(/[&<>"']/g, c => ({
+          '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+        })[c]);
+      }
+
+      function assetUrl(path) {
+        if (!path) return '';
+        if (/^https?:\/\//i.test(path)) return path;
+        return '/' + String(path).replace(/^\.\.\//, '').replace(/^\//, '');
+      }
+
+      function formatPrice(price) {
+        if (price === null || price === undefined || String(price).trim() === '') return '';
+        const s = String(price).trim();
+        return s.startsWith('$') ? s : ('$' + s);
+      }
+
+      function accentLastWord(name) {
+        const raw = String(name || '').trim().replace(/\.+$/, '');
+        if (!raw) return '';
+        const parts = raw.split(/\s+/);
+        const last = parts.pop();
+        const head = parts.length ? esc(parts.join(' ')) + ' ' : '';
+        return head + '<span class="y">' + esc(last) + '.</span>';
+      }
+
+      function orderUrl(item) {
+        const u = new URL(ORDER_BASE);
+        u.searchParams.set('add', item.id);
+        if (item.name) u.searchParams.set('name', item.name);
+        if (item.price) u.searchParams.set('price', String(item.price).replace(/^\$/, ''));
+        if (item.description) u.searchParams.set('desc', item.description);
+        if (item.image) {
+          let img = item.image;
+          if (img.startsWith('../')) img = 'https://mts.moldvan.com/' + img.replace(/^\.\.\//, '');
+          else if (img.startsWith('/')) img = 'https://mts.moldvan.com' + img;
+          else if (!/^https?:/i.test(img)) img = 'https://mts.moldvan.com/' + img.replace(/^\//, '');
+          u.searchParams.set('img', img);
+        }
+        u.hash = 'menu';
+        return u.toString();
+      }
+
+      function syncProgress(n) {
+        if (!items.length) return;
+        const pct = ((n + 1) / items.length) * 100;
+        if (progressFill) progressFill.style.width = pct + '%';
+        if (countEl) countEl.textContent = (n + 1) + ' / ' + items.length;
+      }
+
+      function show(i) {
+        if (!items.length) return;
+        const next = (i + items.length) % items.length;
+        const slides = [...viewport.querySelectorAll('.menu-slide')];
+        if (!slides.length) return;
+        if (next === index) {
+          slides.forEach((el, n) => {
+            el.classList.remove('is-base', 'is-incoming');
+            el.classList.toggle('is-active', n === index);
+          });
+          syncProgress(index);
+          return;
+        }
+        const outgoing = slides[index];
+        const incoming = slides[next];
+        slides.forEach((el) => el.classList.remove('is-base', 'is-incoming'));
+        if (outgoing) outgoing.classList.add('is-active', 'is-base');
+        incoming.classList.remove('is-active');
+        incoming.classList.add('is-incoming');
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => incoming.classList.add('is-active'));
+        });
+        const finish = (e) => {
+          if (e.propertyName && e.propertyName !== 'opacity') return;
+          incoming.removeEventListener('transitionend', finish);
+          slides.forEach((el, n) => {
+            el.classList.remove('is-base', 'is-incoming');
+            el.classList.toggle('is-active', n === next);
+          });
+          index = next;
+          syncProgress(index);
+        };
+        incoming.addEventListener('transitionend', finish);
+        // Keep `index` as outgoing until fade completes so rapid steps stay coherent
+        syncProgress(next);
+      }
+
+      function start() {
+        stop();
+        if (items.length < 2 || modal.classList.contains('open')) return;
+        timer = setInterval(() => show(index + 1), INTERVAL_MS);
+      }
+
+      function stop() {
+        if (timer) clearInterval(timer);
+        timer = null;
+      }
+
+      function fillModal(i) {
+        modalIndex = (i + items.length) % items.length;
+        const item = items[modalIndex];
+        if (!item) return;
+        document.getElementById('modal-img').src = assetUrl(item.image);
+        document.getElementById('modal-img').alt = item.name || '';
+        document.getElementById('modal-title').innerHTML = accentLastWord(item.name || '');
+        document.getElementById('modal-price').textContent = formatPrice(item.price);
+        document.getElementById('modal-desc').textContent = item.description || '';
+        document.getElementById('modal-order').href = orderUrl(item);
+      }
+
+      function jumpTo(i) {
+        if (!items.length) return;
+        index = (i + items.length) % items.length;
+        viewport.querySelectorAll('.menu-slide').forEach((el, n) => {
+          el.classList.remove('is-base', 'is-incoming');
+          el.classList.toggle('is-active', n === index);
+        });
+        syncProgress(index);
+      }
+
+      function openModal(i) {
+        if (!items.length) return;
+        fillModal(i);
+        jumpTo(modalIndex);
+        modal.hidden = false;
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        stop();
+      }
+
+      function closeModal() {
+        modal.classList.remove('open');
+        modal.hidden = true;
+        document.body.style.overflow = '';
+        start();
+      }
+
+      function modalStep(delta) {
+        fillModal(modalIndex + delta);
+        jumpTo(modalIndex);
+      }
+
+      function render(list) {
+        items = list;
+        if (!items.length) {
+          viewport.innerHTML = '<p class="menu-slider-status">Menu coming soon.</p>';
+          progressEl.hidden = true;
+          return;
+        }
+        viewport.innerHTML = items.map((item, i) => `
+          <article class="menu-slide${i === 0 ? ' is-active' : ''}" data-index="${i}" role="button" tabindex="0" aria-label="${esc('Open ' + (item.name || 'menu item'))}">
+            <img src="${esc(assetUrl(item.image))}" alt="${esc(item.name)}" loading="${i === 0 ? 'eager' : 'lazy'}">
+            <div class="menu-slide-meta">
+              <strong>${esc(item.name)}</strong>
+              ${formatPrice(item.price) ? `<span>${esc(formatPrice(item.price))}</span>` : ''}
+            </div>
+          </article>
+        `).join('');
+        progressEl.hidden = items.length < 2;
+        index = 0;
+        syncProgress(0);
+        viewport.querySelectorAll('.menu-slide').forEach((el) => {
+          el.addEventListener('click', () => openModal(Number(el.dataset.index) || 0));
+          el.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              openModal(Number(el.dataset.index) || 0);
+            }
+          });
+        });
+        start();
+      }
+
+      const root = document.getElementById('menuSlider');
+      if (root) {
+        root.addEventListener('mouseenter', stop);
+        root.addEventListener('mouseleave', () => { if (!modal.classList.contains('open')) start(); });
+        root.addEventListener('focusin', stop);
+        root.addEventListener('focusout', () => { if (!modal.classList.contains('open')) start(); });
+      }
+
+      document.getElementById('modal-close').addEventListener('click', closeModal);
+      document.getElementById('modal-prev').addEventListener('click', (e) => { e.stopPropagation(); modalStep(-1); });
+      document.getElementById('modal-next').addEventListener('click', (e) => { e.stopPropagation(); modalStep(1); });
+      modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+      const sheet = document.getElementById('menuModalSheet');
+      sheet.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].clientX;
+      }, { passive: true });
+      sheet.addEventListener('touchend', (e) => {
+        if (touchStartX == null) return;
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        touchStartX = null;
+        if (Math.abs(dx) < 48) return;
+        modalStep(dx < 0 ? 1 : -1);
+      }, { passive: true });
+
+      document.addEventListener('keydown', (e) => {
+        if (!modal.classList.contains('open')) return;
+        if (e.key === 'Escape') closeModal();
+        if (e.key === 'ArrowLeft') modalStep(-1);
+        if (e.key === 'ArrowRight') modalStep(1);
+      });
+
+      fetch('/data/menu.json?t=' + Date.now(), { cache: 'no-store' })
+        .then(r => { if (!r.ok) throw new Error('menu fetch failed'); return r.json(); })
+        .then(data => {
+          const flat = [];
+          (data.categories || []).forEach(cat => {
+            (cat.items || []).forEach(item => {
+              if (item && item.image) flat.push(item);
+            });
+          });
+          render(flat);
+        })
+        .catch(() => {
+          viewport.innerHTML = '<p class="menu-slider-status">Couldn’t load menu.</p>';
+        });
+    })();
+    </script>
+</body>
+</html>

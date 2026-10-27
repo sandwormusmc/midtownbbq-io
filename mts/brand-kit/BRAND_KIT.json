@@ -1,0 +1,46 @@
+{
+  "brand": "Midtown Smokehouse",
+  "handles": {
+    "instagram": "https://www.instagram.com/midtown.s.house/",
+    "facebook": "https://www.facebook.com/Marhabagrillfarmington/",
+    "domain": "midtownsmokehouse.com",
+    "phone": "248-428-7278",
+    "address": "26056 W 12 Mile Rd, Southfield, MI 48034"
+  },
+  "logo": {
+    "primary_file": "logos/primary_logo_lockup.jpg",
+    "instagram_profile": "logos/instagram_profile_pic.jpg",
+    "description": "Black angular shield with neon chartreuse outline; orange flame + crossed spatula/fork; MIDTOWN in bold distressed white display; SMOKEHOUSE in smaller tracked white/yellow sans.",
+    "do_not": [
+      "redraw",
+      "recolor mark",
+      "replace flame/tools icon",
+      "change wordmark letterforms"
+    ]
+  },
+  "color_tokens": {
+    "bg_charcoal": "#0B0B0B",
+    "bg_surface": "#161412",
+    "logo_black": "#000000",
+    "logo_white": "#FFFFFF",
+    "neon_chartreuse": "#D6FF2A",
+    "flame_orange": "#FF5F00",
+    "flame_red": "#E12600",
+    "banner_yellow": "#FFCC00",
+    "cream": "#F3E6D0",
+    "smoke_gray": "#8A8478"
+  },
+  "typography": {
+    "display_midtown": "Heavy condensed distressed sans/serif hybrid matching logo MIDTOWN (Impact/Bebas-like grit \u2014 prefer using logo asset over approximating)",
+    "smokehouse_sub": "Clean wide-tracked all-caps sans (smaller than MIDTOWN)",
+    "ui_body": "Inter or DM Sans",
+    "accent_banner": "Bold brush/slanted sans for location chips (yellow stroke banners)",
+    "rule": "Never invent a scripty elegant face; brand is industrial BBQ."
+  },
+  "imagery_style": "High-contrast food photography, ember/coal backgrounds, storefront brick, torn-paper/burnt edges on promos, warm orange-red fire accents.",
+  "constraints": [
+    "KEEP official logo artwork from logos/ as-is",
+    "Match neon chartreuse + flame orange + charcoal from social",
+    "Match typography feel to logo lockup"
+  ]
+}

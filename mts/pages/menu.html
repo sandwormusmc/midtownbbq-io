@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midtown Smokehouse | Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --accent-yellow: #F5D000;
+            --flame-orange: #FF5F00;
+            --charcoal: #161412;
+            --surface-glass: rgba(22, 20, 18, 0.94);
+        }
+        html {
+            height: 100%;
+        }
+        body {
+            background-color: var(--charcoal);
+            color: white;
+            font-family: sans-serif;
+            margin: 0;
+            min-height: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .page-content {
+            position: relative;
+            flex: 1 0 auto;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        /* Do not flex-grow main/story — that stretches the fade into the footer */
+        .page-content > main,
+        .page-content > section.story-band {
+            flex: 0 0 auto;
+        }
+        .hero-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('../brand-kit/photos/hero_smoked_meats.jpg') center/cover no-repeat;
+            filter: brightness(0.6);
+            z-index: -2;
+        }
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 20%, rgba(22,20,18,0.6) 60%, rgba(22,20,18,0.92) 100%);
+            z-index: -1;
+        }
+        .bg-surface-glass {
+            background-color: rgba(22, 20, 18, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .btn-primary {
+            background-color: var(--flame-orange);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: opacity 0.2s;
+        }
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+        .site-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 1.25rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,.8), transparent);
+        }
+        .site-nav-links {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(0.55rem, 1.8vw, 1.35rem);
+            white-space: nowrap;
+            max-width: 100%;
+        }
+        .nav-home {
+            display: inline-flex;
+            align-items: center;
+            flex: 0 0 auto;
+            margin-right: clamp(0.15rem, 1vw, 0.45rem);
+            text-decoration: none;
+        }
+        .nav-logo {
+            display: block;
+            height: 1.85rem;
+            width: auto;
+            max-width: 8.5rem;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 10px rgba(0,0,0,.65));
+        }
+        @media (min-width: 768px) {
+            .nav-logo { height: 2.15rem; max-width: 10rem; }
+        }
+        .nav-link {
+            color: #fff;
+            font-size: clamp(0.95rem, 2.8vw, 1.35rem);
+            font-weight: 900;
+            font-style: normal;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            text-decoration: none;
+            text-transform: uppercase;
+            text-shadow: 0 2px 12px rgba(0,0,0,.9);
+            white-space: nowrap;
+            flex: 0 0 auto;
+            transition: color 0.2s;
+        }
+        .nav-link .y { color: var(--accent-yellow); }
+        .nav-link:hover { color: var(--accent-yellow); }
+        .nav-link:hover .y { color: #fff; }
+        .nav-link.is-active { color: var(--accent-yellow); }
+        .nav-link.is-active .y { color: #fff; }
+        .text-accent-yellow { color: var(--accent-yellow); }
+        .y { color: var(--accent-yellow); }
+        /* Shared display type — matches Born in Smoke / Our Heritage */
+        .page-title,
+        .section-title {
+          margin: 0 0 .55rem;
+          font-size: clamp(1.85rem, 6vw, 3.1rem);
+          font-weight: 900;
+          font-style: italic;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          text-shadow: 0 2px 12px rgba(0,0,0,.9);
+        }
+        .section-title {
+          font-size: clamp(1.45rem, 4.5vw, 2.35rem);
+          margin: 0;
+        }
+        .page-lede {
+          margin: 0 auto;
+          max-width: 28rem;
+          color: #d1d5db;
+          font-size: clamp(.9rem, 2.2vw, 1.05rem);
+          line-height: 1.45;
+          text-shadow: 0 1px 8px rgba(0,0,0,.9);
+        }
+        .page-body {
+          margin: 0;
+          color: #d1d5db;
+          font-size: clamp(.9rem, 2.2vw, 1.05rem);
+          line-height: 1.45;
+          text-shadow: 0 1px 8px rgba(0,0,0,.9);
+        }
+        .menu-modal #modal-title.page-title {
+          font-size: clamp(1.45rem, 4.5vw, 2.25rem);
+          margin: 0;
+        }
+        .menu-modal #modal-desc {
+          color: #d1d5db;
+          font-size: clamp(.9rem, 2.2vw, 1.05rem);
+          line-height: 1.45;
+          text-shadow: 0 1px 8px rgba(0,0,0,.9);
+        }
+        .menu-modal #modal-price {
+          font-weight: 900;
+          font-style: italic;
+          letter-spacing: -0.02em;
+          text-shadow: 0 1px 8px rgba(0,0,0,.85);
+        }
+        .menu-cat-head {
+          display: flex;
+          align-items: center;
+          margin-bottom: 2.25rem;
+        }
+        .menu-cat-rule {
+          flex-grow: 1;
+          height: 1px;
+          margin-left: 1.25rem;
+          background: rgba(255, 255, 255, 0.12);
+        }
+        .menu-status {
+          margin: 0;
+          padding: 4rem 0;
+          text-align: center;
+          color: rgba(209, 213, 219, 0.55);
+          font-size: clamp(.9rem, 2.2vw, 1.05rem);
+          font-style: italic;
+          text-shadow: 0 1px 8px rgba(0,0,0,.85);
+        }
+
+        /* Background fade: match home ramp, extend to footer */
+        .bg-fade {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          pointer-events: none;
+          background: linear-gradient(
+            to bottom,
+            rgba(22, 20, 18, 0) 0%,
+            rgba(22, 20, 18, 0) 14%,
+            rgba(22, 20, 18, 0.5) 42%,
+            rgba(22, 20, 18, 0.78) 75%,
+            #0b0b0b 100%
+          );
+        }
+        .page-content > *:not(.bg-fade) {
+          position: relative;
+          z-index: 1;
+        }
+
+.story-media {
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+        }
+        .story-media-frame {
+          width: min(100%, 18.5rem);
+          background: rgba(22, 20, 18, 0.55);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 1rem;
+          padding: 0.7rem;
+          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+        }
+        .story-media-frame img {
+          display: block;
+          width: 100%;
+          height: 14rem;
+          object-fit: cover;
+          border-radius: 0.65rem;
+        }
+        .site-footer {
+          position: relative;
+          z-index: 10;
+          flex-shrink: 0;
+          margin-top: auto;
+          padding: 0.55rem 0.75rem calc(0.55rem + env(safe-area-inset-bottom, 0px));
+          background: #0b0b0b;
+          border-top: 1px solid rgba(255, 95, 0, 0.35);
+        }
+        .site-footer-inner {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: center;
+          gap: 0.35rem 0.75rem;
+          color: #FF5F00;
+          font-size: 0.68rem;
+          font-weight: 700;
+          letter-spacing: 0.03em;
+          line-height: 1.2;
+        }
+        .site-footer-copy { white-space: nowrap; }
+        .site-footer-social {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.55rem;
+        }
+        .site-footer-social a {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 1.1rem;
+          height: 1.1rem;
+          color: #FF5F00;
+          text-decoration: none;
+          transition: color 0.15s ease;
+        }
+        .site-footer-social a:hover { color: #FF8A3D; }
+        .site-footer-social svg {
+          width: 100%;
+          height: 100%;
+          fill: currentColor;
+          display: block;
+        }
+        .site-footer-inner .footer-maps-link {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 1.1rem;
+          height: 1.1rem;
+          color: #FF5F00;
+          text-decoration: none;
+          transition: color 0.15s ease;
+        }
+        .site-footer-inner .footer-maps-link:hover {
+          color: #FF8A3D;
+        }
+        .site-footer-inner .footer-maps-link svg {
+          width: 100%;
+          height: 100%;
+          fill: currentColor;
+          display: block;
+        }
+
+    
+
+
+        .menu-item-card {
+          cursor: pointer;
+          transition: transform .15s ease, border-color .15s ease;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          min-width: 0;
+        }
+        .menu-item-card:hover { transform: translateY(-2px); border-color: rgba(255,95,0,.35) !important; }
+        .menu-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+        @media (min-width: 640px) {
+          .menu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (min-width: 1024px) {
+          .menu-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        .menu-item-thumb {
+          width: 100%;
+          aspect-ratio: 4 / 3;
+          flex-shrink: 0;
+          overflow: hidden;
+          background: rgba(0, 0, 0, 0.25);
+        }
+        .menu-item-thumb img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .menu-item-body {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          padding: 1.25rem;
+        }
+        .menu-item-body h3 {
+          margin: 0;
+          font-size: clamp(1.05rem, 2.4vw, 1.2rem);
+          font-weight: 900;
+          font-style: italic;
+          letter-spacing: -0.03em;
+          line-height: 1.15;
+          text-shadow: 0 1px 8px rgba(0,0,0,.9);
+        }
+        .menu-item-body .menu-item-price {
+          color: var(--accent-yellow);
+          font-weight: 900;
+          font-style: italic;
+          letter-spacing: -0.02em;
+          font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+          text-shadow: 0 1px 8px rgba(0,0,0,.85);
+        }
+        .menu-item-body .menu-item-desc {
+          margin: 0.55rem 0 0;
+          font-size: clamp(.8rem, 1.8vw, .9rem);
+          line-height: 1.45;
+          color: #d1d5db;
+          text-shadow: 0 1px 8px rgba(0,0,0,.85);
+          flex: 1;
+        }
+        .menu-modal-backdrop {
+          position: fixed; inset: 0; z-index: 80;
+          background: rgba(0,0,0,.72);
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
+          display: none; align-items: center; justify-content: center;
+          padding: 1.25rem;
+        }
+        .menu-modal-backdrop.open { display: flex; }
+        .menu-modal {
+          width: min(100%, 34rem);
+          max-height: min(90vh, 40rem);
+          overflow: auto;
+          background: rgba(22, 20, 18, 0.94);
+          border: 1px solid rgba(255,255,255,.12);
+          border-radius: 1.25rem;
+          box-shadow: 0 24px 60px rgba(0,0,0,.55);
+        }
+        .menu-modal img.hero {
+          width: 100%; height: 14rem; object-fit: cover;
+          border-radius: 1.25rem 1.25rem 0 0;
+          display: block;
+        }
+        .menu-modal .body { padding: 1.5rem 1.5rem 1.75rem; }
+        .menu-modal .close-x {
+          position: absolute; top: .85rem; right: .85rem;
+          width: 2.25rem; height: 2.25rem; border-radius: 999px;
+          border: 1px solid rgba(255,255,255,.2);
+          background: rgba(0,0,0,.45); color: #fff;
+          font-size: 1.25rem; line-height: 1; cursor: pointer;
+        }
+        .menu-modal-shell { position: relative; }
+    </style>
+</head>
+<body>
+    <div class="hero-bg"></div>
+    <div class="vignette"></div>
+
+    <nav class="site-nav">
+        <div class="site-nav-links">
+            <a href="/" class="nav-home" aria-label="Midtown Smokehouse home"><img class="nav-logo" src="../brand-kit/logos/primary_logo_lockup_sm.png" alt="Midtown Smokehouse"></a>
+            <a href="menu.html" class="nav-link is-active">MENU<span class="y">.</span></a>
+            <a href="about.html" class="nav-link">OUR <span class="y">STORY.</span></a>
+            <a href="location.html" class="nav-link">LOCATION<span class="y">.</span></a>
+            <a href="catering.html" class="nav-link">CATERING<span class="y">.</span></a>
+        </div>
+    </nav>
+
+    <div class="page-content">
+    <div class="bg-fade" aria-hidden="true"></div>
+
+    <!-- Menu Header -->
+    <header class="relative pt-32 pb-16 px-6 text-center">
+        <h1 class="page-title">OUR SMOKED <span class="y">MENU.</span></h1>
+        <p class="page-lede">Slow-cooked, seasoned, and served with soul.</p>
+    </header>
+
+    <!-- Menu Content -->
+    <main class="relative z-10 max-w-6xl mx-auto px-6 pb-24">
+        <div id="menu-root" class="space-y-20">
+            <p class="menu-status">Loading menu…</p>
+        </div>
+    </main>
+
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <span class="site-footer-copy">&copy; 2026 Midtown Smokehouse, LLC</span>
+            <nav class="site-footer-social" aria-label="Social">
+                <a href="https://www.instagram.com/midtown.s.house/" target="_blank" rel="noopener" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4c0 3.2-2.6 5.8-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8C2 4.6 4.6 2 7.8 2zm-.2 2C5.7 4 4 5.7 4 7.6v8.8C4 18.3 5.7 20 7.6 20h8.8c1.9 0 3.6-1.7 3.6-3.6V7.6C20 5.7 18.3 4 16.4 4H7.6zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.5-3.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/></svg>
+                </a>
+                <a href="https://www.facebook.com/Marhabagrillfarmington/" target="_blank" rel="noopener" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v7h3v-7h3.1l.9-3H13v-2c0-.6.4-1 1-1z"/></svg>
+                </a>
+                <a class="footer-maps-link" href="https://www.google.com/maps/search/?api=1&query=26056+W+12+Mile+Rd,+Southfield,+MI+48034" target="_blank" rel="noopener" aria-label="26056 W 12 Mile Rd, Southfield, MI 48034">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                </a>
+            </nav>
+        </div>
+    </footer>
+
+
+    <div class="menu-modal-backdrop" id="menu-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+      <div class="menu-modal-shell menu-modal">
+        <button type="button" class="close-x" id="modal-close" aria-label="Close">&times;</button>
+        <img class="hero" id="modal-img" src="" alt="">
+        <div class="body">
+          <div class="flex justify-between items-start gap-4 mb-3">
+            <h2 id="modal-title" class="page-title"></h2>
+            <span id="modal-price" class="text-accent-yellow text-xl shrink-0"></span>
+          </div>
+          <p id="modal-desc" class="page-body mb-8"></p>
+          <a id="modal-order" class="btn-primary inline-block text-center w-full" href="#">Order Now</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    (function () {
+      const root = document.getElementById('menu-root');
+      const modal = document.getElementById('menu-modal');
+      const ORDER_BASE = 'https://mts-order.moldvan.com/';
+      if (!root || !modal) return;
+
+      let itemsById = {};
+
+      function esc(s) {
+        return String(s ?? '').replace(/[&<>"']/g, c => ({
+          '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+        })[c]);
+      }
+
+      function assetUrl(path) {
+        if (!path) return '';
+        if (/^https?:\/\//i.test(path)) return path;
+        return path.replace(/^\.\.\//, '../');
+      }
+
+      function orderUrl(item) {
+        const u = new URL(ORDER_BASE);
+        u.searchParams.set('add', item.id);
+        if (item.name) u.searchParams.set('name', item.name);
+        if (item.price) u.searchParams.set('price', String(item.price).replace(/^\$/, ''));
+        if (item.description) u.searchParams.set('desc', item.description);
+        if (item.image) {
+          let img = item.image;
+          if (img.startsWith('../')) img = 'https://mts.moldvan.com/' + img.replace(/^\.\.\//, '');
+          else if (img.startsWith('/')) img = 'https://mts.moldvan.com' + img;
+          u.searchParams.set('img', img);
+        }
+        u.hash = 'menu';
+        return u.toString();
+      }
+
+      function accentLastWord(name) {
+        const raw = String(name || '').trim().replace(/\.+$/, '');
+        if (!raw) return '';
+        const parts = raw.split(/\s+/);
+        const last = parts.pop();
+        const head = parts.length ? esc(parts.join(' ')) + ' ' : '';
+        return head + '<span class="y">' + esc(last) + '.</span>';
+      }
+
+      function openModal(item) {
+        document.getElementById('modal-img').src = assetUrl(item.image);
+        document.getElementById('modal-img').alt = item.name || '';
+        document.getElementById('modal-title').innerHTML = accentLastWord(item.name || '');
+        document.getElementById('modal-price').textContent = item.price ? (String(item.price).startsWith('$') ? item.price : ('$' + item.price)) : '';
+        document.getElementById('modal-desc').textContent = item.description || '';
+        const a = document.getElementById('modal-order');
+        a.href = orderUrl(item);
+        modal.hidden = false;
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        modal.classList.remove('open');
+        modal.hidden = true;
+        document.body.style.overflow = '';
+      }
+
+      function formatPrice(price) {
+        if (price === null || price === undefined || String(price).trim() === '') return '';
+        const s = String(price).trim();
+        return s.startsWith('$') ? s : ('$' + s);
+      }
+
+      function renderItem(item) {
+        itemsById[item.id] = item;
+        const price = formatPrice(item.price);
+        return `
+          <button type="button" class="menu-item-card bg-surface-glass rounded-lg overflow-hidden border border-white/5 text-left w-full" data-item-id="${esc(item.id)}">
+            <div class="menu-item-thumb pointer-events-none">
+              <img src="${esc(assetUrl(item.image))}" alt="${esc(item.name)}">
+            </div>
+            <div class="menu-item-body">
+              <div class="flex justify-between items-start gap-3">
+                <h3>${accentLastWord(item.name)}</h3>
+                ${price ? `<span class="menu-item-price shrink-0">${esc(price)}</span>` : ''}
+              </div>
+              <p class="menu-item-desc">${esc(item.description || '')}</p>
+            </div>
+          </button>`;
+      }
+
+      function renderCategory(cat) {
+        const items = (cat.items || []).map(renderItem).join('');
+
+        return `
+          <section>
+            <div class="menu-cat-head">
+              <h2 class="section-title">${accentLastWord(cat.name)}</h2>
+              <div class="menu-cat-rule" aria-hidden="true"></div>
+            </div>
+            <div class="menu-grid">${items}</div>
+          </section>`;
+      }
+
+      root.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-item-id]');
+        if (!btn) return;
+        const item = itemsById[btn.dataset.itemId];
+        if (item) openModal(item);
+      });
+
+      document.getElementById('modal-close').addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+      });
+
+      fetch('../data/menu.json?t=' + Date.now(), { cache: 'no-store' })
+        .then(r => { if (!r.ok) throw new Error('menu fetch failed'); return r.json(); })
+        .then(data => {
+          const cats = data.categories || [];
+          itemsById = {};
+          if (!cats.length) {
+            root.innerHTML = '<p class="menu-status">Menu coming soon.</p>';
+            return;
+          }
+          root.innerHTML = cats.map(renderCategory).join('');
+        })
+        .catch(err => {
+          console.error(err);
+          root.innerHTML = '<p class="menu-status">Unable to load menu right now.</p>';
+        });
+    })();
+    </script>
+</body>
+</html>
