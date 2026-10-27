@@ -312,7 +312,7 @@ def write_handout(menu) -> None:
                     # behind the title + text. Plain <h2> sections like Sandwiches
                     # stay as normal text sections.
                     img_raw = sec.get("image") or sec.get("heroImage")
-                    if img_raw:
+                    if img_raw and not sec.get("items"):
                         img_src = img_raw if img_raw.startswith("assets/") else f'assets/generated/{img_raw}'
                         # Drop the inline  tag; it becomes the dimmed background
                         # layer behind the title/note text only (text stays full brightness).
