@@ -202,32 +202,36 @@ html, body {
     font-size: 1.05em;
 }
 
-.note, .detail, .choice-note {
+.note, .detail {
     margin: 0.06em 0 0.18em;
-    color: var(--cream-dim);
+    color: #fff;
     font-family: "DM Sans", sans-serif;
-    font-weight: 400;
+    font-weight: 700;
     line-height: 1.25;
     font-size: 13px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.9);
 }
 
 .choice-note {
     margin: 0 0 0.05em 0.15em;
-    color: var(--gold);
+    color: var(--yellow);
     font-family: Oswald, Impact, sans-serif;
-    font-weight: 500;
+    font-weight: 700;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     font-size: 12px;
+    line-height: 1.25;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.9);
 }
 
 .choices-label {
     margin: 0.15em 0 0.05em;
     font-family: Oswald, Impact, sans-serif;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--yellow);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.9);
 }
 
 .choices {
@@ -241,13 +245,16 @@ html, body {
 
 .choices li {
     font-family: "DM Sans", sans-serif;
-    color: var(--cream);
+    color: #fff;
+    font-weight: 700;
     font-size: 14px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.9);
 }
 
 .choices li::before {
     content: "▸ ";
-    color: var(--gold);
+    color: var(--yellow);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 2px 8px rgba(0, 0, 0, 0.9);
 }
 
 .item {
@@ -262,6 +269,9 @@ html, body {
 
 .item .name {
     flex: 0 1 auto;
+    color: #fff;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.9);
 }
 
 .item .portion {
@@ -307,6 +317,28 @@ html, body {
     font-size: 0.78em;
     letter-spacing: 0.06em;
     text-transform: uppercase;
+}
+
+.item.heads.subheads {
+    margin: 0.18em 0 0.06em;
+    padding-top: 0.10em;
+    border-top: 1px solid rgba(245, 208, 0, 0.45);
+}
+
+.item.heads.subheads .name {
+    color: var(--yellow);
+    font-family: Oswald, Impact, sans-serif;
+    font-weight: 700;
+    font-size: 0.92em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.9);
+}
+
+.item.heads.subheads .prices span {
+    color: var(--yellow);
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 2px 8px rgba(0, 0, 0, 0.9);
 }
 
 .hours {
@@ -376,13 +408,35 @@ body.background-cubes-b .page { background: linear-gradient(rgba(11, 11, 11, 0.1
 .page .columns { flex: 1 1 auto; display: grid; grid-template-columns: 1fr 1fr; column-gap: 0.25in; margin-top: 0.04in; min-height: 0; box-sizing: border-box; }
 .page .col { display: flex; flex-direction: column; justify-content: space-between; gap: 0.06in; min-height: 0; }
 .page .section h2 { font-size: 22px; }
-.page .note, .page .detail { font-size: 12px; text-align: right; }
-.page .choice-note, .page .choices-label { font-size: 11px; text-align: right; margin-right: 0.1em; }
-.page .choices li { font-size: 14px; }
+.page .note, .page .detail {
+    font-size: 12px;
+    text-align: right;
+    color: #fff;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.9);
+}
+.page .choice-note, .page .choices-label {
+    font-size: 11px;
+    text-align: right;
+    margin-right: 0.1em;
+    color: var(--yellow);
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.9);
+}
+.page .choices li {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.9);
+}
 .page .item { font-size: 14px; margin: 0.08em 0; }
 .page .price, .page .prices span { font-size: 16px; }
 .page .hours { font-size: 11px; }
-.page .item .name { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9); }
+.page .item .name {
+    color: #fff;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.9);
+}
 .page .section:first-of-type { position: relative; }
 .page .section:first-of-type .section-hero-image { position: absolute; top: 0; left: 0; right: 0; z-index: -1; pointer-events: none; opacity: 0.18; }
 .page .section { margin-bottom: 0.1em; position: relative; box-sizing: border-box; }

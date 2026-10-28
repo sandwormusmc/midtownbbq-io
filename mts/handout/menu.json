@@ -33,7 +33,6 @@
     "platters": {
       "title": "Platters",
       "note": "Served with 2 sides + 2 Texas toasts",
-      "subheader": "Half & Full",
       "items": [
         {
           "name": "Beef Brisket",
@@ -122,7 +121,7 @@
         "Pulled Chicken (\u00bd lb)",
         "Sausage (\u00bd lb)"
       ],
-      "choiceNotePrefix": "Choose: ",
+      "choiceNotePrefix": "Sausage: ",
       "choiceNote": "Jalape\u00f1o Cheese \u00b7 Polish \u00b7 Beef",
       "heroImage": "assets/generated/combos-hero.png"
     },
@@ -308,71 +307,61 @@
       "title": "Meat \u00c0 La Carte",
       "priceHeaders": [
         "\u00bd lb",
-        "1 lb",
-        "Half",
-        "Full"
+        "1 lb"
       ],
       "items": [
         {
           "name": "Beef Brisket",
           "prices": [
             "$14",
-            "$26",
-            "",
-            ""
+            "$26"
           ]
         },
         {
           "name": "Pulled Chicken",
           "prices": [
             "$9",
-            "$16",
-            "",
-            ""
+            "$16"
           ]
         },
         {
           "name": "Rib Tips",
           "prices": [
             "\u2014",
-            "$12",
-            "",
-            ""
+            "$12"
           ]
         },
         {
           "name": "Pulled Pork",
           "prices": [
             "$9",
-            "$16",
-            "",
-            ""
+            "$16"
           ]
         },
         {
           "name": "Brisket Blackened",
           "prices": [
             "$16",
-            "$30",
-            "",
-            ""
+            "$30"
           ]
         },
         {
           "name": "Sausage",
           "prices": [
             "$9",
-            "$15",
-            "",
-            ""
+            "$15"
           ],
           "choiceNote": "Jalape\u00f1o Cheese \u00b7 Polish \u00b7 Beef"
         },
         {
+          "heads": [
+            "Half",
+            "Full"
+          ]
+        },
+        {
           "name": "Smoked Chicken",
           "prices": [
-            "",
-            "",
             "$12",
             "$20"
           ]
@@ -380,8 +369,6 @@
         {
           "name": "St. Louis Style Ribs",
           "prices": [
-            "",
-            "",
             "$15",
             "$28"
           ]

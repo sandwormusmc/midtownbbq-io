@@ -70,11 +70,14 @@ def item_row(item, headers=None, choiceNotePrefix=""):
     return row + extra
 
 
-def header_row(headers):
+def header_row(headers, label=None, extra_class=""):
+    classes = "item heads"
+    if extra_class:
+        classes += f" {extra_class}"
+    name = esc(label) if label else "&nbsp;"
     return (
-        '<div class="item heads"><span class="name">&nbsp;</span><span class="leaders"></span>'
-        + price_cells(headers)
-        + "</div>"
+        f'<div class="{classes}"><span class="name">{name}</span>'
+        f'<span class="leaders"></span>{price_cells(headers)}</div>'
     )
 
 
@@ -115,11 +118,20 @@ def render_section(section, sid=None) -> str:
         parts.append(f'<img class="section-hero-image" src="{esc(hero_path)}" alt="{esc(section["title"])}">')
     if section.get("image"):
         parts.append(f'<img class="section-image" src="assets/generated/{esc(section["image"])}" alt="{esc(section["title"])}">')
-    if section.get("note"):
-        # Crazy Potato note reads better under the price line.
-        if section["title"] != "Crazy Potato":
-            parts.append(f'<p class="note">{esc(section["note"])}</p>')
+    # Notes that belong under the priced rows, not above them.
+    note_after_items = section["title"] in ("Crazy Potato", "Whole Wings")
+    if section.get("note") and not note_after_items:
+        parts.append(f'<p class="note">{esc(section["note"])}</p>')
     for item in section.get("items", []):
+        if item.get("heads"):
+            parts.append(
+                header_row(
+                    item["heads"],
+                    label=item.get("headsLabel"),
+                    extra_class="subheads",
+                )
+            )
+            continue
         parts.append(item_row(item, choiceNotePrefix=section.get("choiceNotePrefix", "")))
     for item in section.get("single", []):
         parts.append(item_row(item, choiceNotePrefix=section.get("choiceNotePrefix", "")))
@@ -136,7 +148,7 @@ def render_section(section, sid=None) -> str:
     if section.get("choiceNote"):
         prefix = section.get("choiceNotePrefix", "")
         parts.append(f'<p class="choice-note">{esc(prefix)}{esc(section["choiceNote"])}</p>')
-    if section["title"] == "Crazy Potato" and section.get("note"):
+    if note_after_items and section.get("note"):
         parts.append(f'<p class="note">{esc(section["note"])}</p>')
     parts.append("</section>")
     return "".join(parts)
@@ -427,23 +439,43 @@ def write_handout(menu) -> None:
     page_css = (
         "@page { size: letter portrait; margin: 0; }"
         "#page-1 .side-section{position:relative;color:white;display:flex;flex-direction:column;}"
-        "#page-1 .side-section::before{content:\"\";position:absolute;inset:0;background:rgba(0,0,0,0.45);z-index:1;}"
         "#page-1 .side-section > *{position:relative;z-index:2;}"
         "#page-1 .side-section .side-photo{position:relative;z-index:2;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}"
-        "#page-1 .side-section .section-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.5);z-index:0;pointer-events:none;display:block;}\n#page-1 .side-section .section-head h2{font-size:22px;padding-top:0.08in;font-family:Oswald,Impact,sans-serif;font-weight:900;text-shadow:0 2px 10px rgba(0,0,0,0.95);color:white!important;}"
-        "#page-1 .side-section .side-photo > p{position:relative;z-index:2;margin:0 0.12in;font-size:17px;line-height:1.45;max-width:92%;font-family:Oswald,Impact,sans-serif;font-weight:600;text-shadow:0 2px 10px rgba(0,0,0,0.95);color:white!important;}"
+        "#page-1 .side-section .section-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.88);z-index:0;pointer-events:none;display:block;}"
+        "#page-1 .side-section .side-photo::after{content:\"\";position:absolute;left:0;right:0;bottom:0;height:58%;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.35) 55%,transparent 100%);z-index:1;pointer-events:none;}"
+        "#page-1 .side-section .side-photo > *:not(.section-bg-img){position:relative;z-index:2;}"
+        "#page-1 .side-section .section-head h2{font-size:22px;padding-top:0.08in;font-family:Oswald,Impact,sans-serif;font-weight:900;text-shadow:0 2px 10px rgba(0,0,0,0.95);color:white!important;}"
+        "#page-1 .side-section .side-photo > p{margin:0 0.12in;font-size:17px;line-height:1.45;max-width:92%;font-family:Oswald,Impact,sans-serif;font-weight:600;text-shadow:0 2px 10px rgba(0,0,0,0.95);color:white!important;}"
         "#page-1 .side-section .side-photo > p.choice-note{font-size:13px;font-weight:500;text-transform:none;margin-top:0.10in;}"
         "#page-1 .mast{background:transparent;padding:0.12in 0.18in;border-radius:6px;margin-bottom:0.06in;}"
         "#page-1 .col{justify-content:flex-start;}"
-        "#page-1 #section-wings .section-hero-image{max-height:1.7in;}"
+        # Whole Wings: priced rows over the hero; "Wings only" as a small note under them.
+        "#page-1 #section-wings .side-photo{align-items:stretch;justify-content:flex-end;text-align:left;padding:0.10in 0.12in 0.08in;min-height:1.7in;}"
+        "#page-1 #section-wings .side-photo > .item{width:100%;margin:0.04em 0;}"
+        "#page-1 #section-wings .side-photo > p.note{margin:0.08in 0 0;max-width:none;font-size:12px!important;font-weight:700!important;font-family:\"DM Sans\",sans-serif!important;text-align:right;line-height:1.2;color:#fff!important;text-shadow:0 1px 2px rgba(0,0,0,1),0 2px 10px rgba(0,0,0,0.95),0 0 8px rgba(0,0,0,0.9)!important;}"
         "#page-2 .side-section{position:relative;color:white;display:flex;flex-direction:column;}"
-        "#page-2 .side-section::before{content:\"\";position:absolute;inset:0;background:rgba(0,0,0,0.45);z-index:1;}"
         "#page-2 .side-section > *{position:relative;z-index:2;}"
         "#page-2 .side-section .side-photo{position:relative;z-index:2;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}"
-        "#page-2 .side-section .section-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.5);z-index:0;pointer-events:none;display:block;}\n#page-2 .side-section .section-head h2{font-size:22px;padding-top:0.08in;font-family:Oswald,Impact,sans-serif;font-weight:900;text-shadow:0 2px 10px rgba(0,0,0,0.95);color:white!important;}"
-        "#page-2 .side-section .side-photo > p{position:relative;z-index:2;margin:0 0.12in;font-size:17px;line-height:1.45;max-width:92%;font-family:Oswald,Impact,sans-serif;font-weight:600;text-shadow:0 2px 10px rgba(0,0,0,0.95);color:white!important;}"
+        "#page-2 .side-section .section-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.88);z-index:0;pointer-events:none;display:block;}"
+        "#page-2 .side-section .side-photo::after{content:\"\";position:absolute;left:0;right:0;bottom:0;height:58%;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.35) 55%,transparent 100%);z-index:1;pointer-events:none;}"
+        "#page-2 .side-section .side-photo > *:not(.section-bg-img){position:relative;z-index:2;}"
+        "#page-2 .side-section .section-head h2{font-size:22px;padding-top:0.08in;font-family:Oswald,Impact,sans-serif;font-weight:900;text-shadow:0 2px 10px rgba(0,0,0,0.95);color:white!important;}"
+        "#page-2 .side-section .side-photo > p{margin:0 0.12in;font-size:17px;line-height:1.45;max-width:92%;font-family:Oswald,Impact,sans-serif;font-weight:600;text-shadow:0 2px 10px rgba(0,0,0,0.95);color:white!important;}"
         "#page-2 .side-section .side-photo > p.choice-note{font-size:13px;font-weight:500;text-transform:none;margin-top:0.10in;}"
+        # Combos: same bright hero + scrim as Wings; small serving note; choose → meats → sausage.
+        # !important needed to beat the generic side-photo > p { color:white!important; font-size:17px }.
+        "#page-2 #section-combos .section-bg-img{filter:brightness(0.88)!important;}"
+        "#page-2 #section-combos .side-photo::after{height:88%;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.4) 45%,rgba(0,0,0,0.18) 75%,transparent 100%);}"
+        "#page-2 #section-combos .side-photo{align-items:stretch;justify-content:flex-start;text-align:left;padding:0.08in 0.12in 0.10in;}"
+        "#page-2 #section-combos .side-photo > p.note{margin:0 0 0.06in;max-width:none;font-size:12px!important;font-weight:700!important;font-family:\"DM Sans\",sans-serif!important;text-align:right;line-height:1.25;text-transform:none;letter-spacing:0;color:#fff!important;text-shadow:0 1px 2px rgba(0,0,0,1),0 2px 10px rgba(0,0,0,0.95),0 0 8px rgba(0,0,0,0.9)!important;}"
+        "#page-2 #section-combos .side-photo > .item{width:100%;margin:0.04em 0;}"
+        "#page-2 #section-combos .side-photo > p.choices-label{margin:0.10in 0 0.04in;max-width:none;font-size:11px!important;font-weight:700!important;font-family:Oswald,Impact,sans-serif!important;letter-spacing:0.08em;text-transform:uppercase;color:var(--yellow)!important;text-align:left;line-height:1.2;text-shadow:0 1px 2px rgba(0,0,0,1),0 2px 10px rgba(0,0,0,0.95),0 0 8px rgba(0,0,0,0.9)!important;}"
+        "#page-2 #section-combos .side-photo > .choices{width:100%;margin:0 0 0.06in;}"
+        "#page-2 #section-combos .side-photo > .choices li{font-size:13px;color:#fff;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,1),0 2px 10px rgba(0,0,0,0.95),0 0 8px rgba(0,0,0,0.9);}"
+        "#page-2 #section-combos .side-photo > p.choice-note{margin:0.04in 0 0;max-width:none;font-size:11px!important;font-weight:700!important;font-family:Oswald,Impact,sans-serif!important;letter-spacing:0.04em;text-transform:uppercase;color:var(--yellow)!important;text-align:left;line-height:1.25;text-shadow:0 1px 2px rgba(0,0,0,1),0 2px 10px rgba(0,0,0,0.95),0 0 8px rgba(0,0,0,0.9)!important;}"
+        # Screen-only Front/Back labels — hide in print so they don't create blank PDF pages.
         ".page-label{color:var(--yellow);font-family:Oswald,Impact,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;font-size:20px;margin:0 0 0.12in 0;text-shadow:0 2px 8px rgba(0,0,0,0.9);}"
+        "@media print{.page-label{display:none!important;}}"
     )
     html_doc = page_shell(
         "Midtown Smokehouse menu handout",
@@ -687,6 +719,8 @@ def export_outputs() -> None:
     export.mkdir(parents=True, exist_ok=True)
     handout_pdf = export / "midtown-handout.pdf"
     chrome_pdf(ROOT / "handout.html", handout_pdf)
+    for stale in export.glob("handout-page-*.png"):
+        stale.unlink()
     subprocess.run(
         ["pdftoppm", "-png", "-r", "200", str(handout_pdf), str(export / "handout-page")],
         check=True,

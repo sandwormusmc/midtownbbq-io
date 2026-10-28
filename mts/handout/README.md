@@ -2,7 +2,7 @@
 
 Two-sided US Letter portrait handout and 1280×720 TV screens. Menu copy and prices come from `menu.json`. The confirmed restaurant prices in `../continue.md` are the source. This folder does not change the live marketing site or `mts/data/menu.json`.
 
-Nothing here is deployed.
+Nothing here changes the live marketing site or `mts/data/menu.json`. The handout deploys to `s3://midtownbbq-io/handout/` and serves at https://midtownbbq.io/handout/ via CloudFront (`E293E6RVQ0BLMD`).
 
 ## Layout
 
@@ -12,9 +12,9 @@ Nothing here is deployed.
 - Hours sit in the same full-width footer on every page and TV screen: `MON Closed · TUE–FRI 11AM–7PM · SAT 12PM–8PM · SUN 12PM–7PM`.
 - Section headings are upright bold condensed (Oswald), white, with a yellow rule and a dark drop shadow. Prices are yellow (`#F5D000`). There is no trailing dot after Beverages or Desserts.
 
-Page 1: Platters, Big Platters, Sides, Combos, Catering, Beverages.
+Page 1: Sandwiches, Meat À La Carte, Sides, Quesadilla (right column top), then Crazy Potato, Whole Wings, Desserts (right column below).
 
-Page 2: Sandwiches, Specials, Quesadilla, Crazy Potato, Meat À La Carte, Whole Wings, Desserts.
+Page 2: Platters, Big Platters, Combos (left column); Sides, Catering, Specials, Beverages (right column).
 
 Four TV screens at 1280×720. Each screen has its own food photograph. The logo sits large on that photograph. Section headers and item names use the same heavy sans and drop shadow as mts.moldvan.com. Hours are on screens 1 and 3. Address and phone are on screens 2 and 4.
 
@@ -22,8 +22,6 @@ Four TV screens at 1280×720. Each screen has its own food photograph. The logo 
 2. Sandwiches, quesadilla, specials, crazy potato
 3. À la carte, wings, and combos
 4. Sides, catering, beverages, and desserts
-
-## Artwork
 
 - Hero and charcoal texture are generated with Flux.1 Dev on the DGX Spark ComfyUI (`http://192.168.1.205:8188`) via `gen_assets.py`.
 - `build.py` composites them into one background: brisket across the top, fading into the charcoal wood texture so menu type stays readable.
