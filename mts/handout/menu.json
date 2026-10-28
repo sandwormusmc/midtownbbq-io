@@ -112,7 +112,6 @@
           "price": "$30"
         }
       ],
-      "choicesLabel": "Choose:",
       "choices": [
         "Smoked Wings (3)",
         "Ribs (\u00bc rack)",
@@ -121,7 +120,6 @@
         "Pulled Chicken (\u00bd lb)",
         "Sausage (\u00bd lb)"
       ],
-      "choiceNotePrefix": "Sausage: ",
       "choiceNote": "Jalape\u00f1o Cheese \u00b7 Polish \u00b7 Beef",
       "heroImage": "assets/generated/combos-hero.png"
     },
@@ -175,9 +173,33 @@
         }
       ]
     },
+    "sidesFront": {
+      "title": "Sides",
+      "namesOnly": true,
+      "items": [
+        {
+          "name": "Mac & Cheese"
+        },
+        {
+          "name": "Sweet Corn"
+        },
+        {
+          "name": "Collard Greens"
+        },
+        {
+          "name": "Baked Beans"
+        },
+        {
+          "name": "Potato Wedges"
+        },
+        {
+          "name": "Corn Bread"
+        }
+      ]
+    },
     "catering": {
       "title": "Catering",
-      "note": "\u00bd sheet",
+      "priceHeaders": ["\u00bd sheet"],
       "items": [
         {
           "name": "Mac & Cheese",
@@ -233,7 +255,6 @@
     "sandwiches": {
       "title": "Sandwiches",
       "note": "Served with coleslaw and pickles",
-      "choiceNotePrefix": "Choose: ",
       "items": [
         {
           "name": "Sliced or Chopped Brisket",
@@ -265,22 +286,19 @@
     },
     "specials": {
       "title": "Specials",
-      "choiceNotePrefix": "Choose: ",
       "items": [
         {
           "name": "Brisket Grilled Cheese",
-          "price": "$12",
-          "choiceNote": "Brisket \u00b7 Pulled Pork \u00b7 Sausage"
+          "price": "$12"
         },
         {
           "name": "Brisket Mac & Cheese",
-          "price": "$12",
-          "choiceNote": "Brisket \u00b7 Pulled Pork \u00b7 Sausage"
+          "price": "$12"
         },
         {
           "name": "Tips & Wings (6)",
           "price": "$20",
-          "choiceNote": "Smoked or Fried"
+          "choiceNote": "Smoked or Fried, with 1lb Rib Tips"
         },
         {
           "name": "Midtown Loaded Sandwich",
@@ -293,14 +311,14 @@
       "title": "Quesadilla",
       "price": "$10",
       "note": "A flour tortilla stuffed with melted cheese and your choice of slow-smoked meat, grilled until golden and crisp.",
-      "choiceNotePrefix": "Choose: ",
       "choiceNote": "Pulled Pork \u00b7 Brisket \u00b7 Pulled Chicken",
       "image": "quesadilla.jpg"
     },
     "crazyPotato": {
       "title": "Crazy Potato",
       "price": "$14",
-      "note": "Potato topped with Mac & Cheese, Baked Beans, Sour Cream with your choice of Meat (Beef Brisket or Pulled Pork).",
+      "note": "Potato topped with Mac & Cheese, Baked Beans, and Sour Cream with your choice of meat.",
+      "choiceNote": "Pulled Pork \u00b7 Beef Brisket \u00b7 Pulled Chicken",
       "image": "crazy-potato.jpg"
     },
     "alacarte": {
@@ -435,12 +453,12 @@
       "columns": [
         [
           "sandwiches",
-          "alacarte"
+          "sidesFront",
+          "desserts"
         ],
         [
           "wings",
-          "sides",
-          "desserts"
+          "alacarte"
         ]
       ],
       "bottomRow": [
@@ -454,14 +472,16 @@
         [
           "platters",
           "bigPlatters",
-          "combos"
+          "catering"
         ],
         [
           "sides",
-          "catering",
           "specials",
           "beverages"
         ]
+      ],
+      "bottomRow": [
+        "combos"
       ]
     }
   ],

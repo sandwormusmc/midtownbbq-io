@@ -14,7 +14,7 @@ Nothing here changes the live marketing site or `mts/data/menu.json`. The handou
 
 Page 1: Sandwiches + Meat À La Carte (left); Whole Wings, Sides, Desserts (right); Crazy Potato | Quesadilla on a shared bottom row.
 
-Page 2: Platters, Big Platters, Combos (left column); Sides, Catering, Specials, Beverages (right column).
+Page 2: Platters, Big Platters, Catering (left); Sides, Specials, Beverages (right); Combos full-width across the bottom.
 
 Four TV screens at 1280×720. Each screen has its own food photograph. The logo sits large on that photograph. Section headers and item names use the same heavy sans and drop shadow as mts.moldvan.com. Hours are on screens 1 and 3. Address and phone are on screens 2 and 4.
 

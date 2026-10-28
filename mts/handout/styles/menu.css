@@ -298,8 +298,9 @@ html, body {
 }
 
 .prices {
-    min-width: 0;
-    overflow: hidden;
+    flex: 0 0 auto;
+    min-width: auto;
+    overflow: visible;
     display: grid;
     justify-items: end;
     column-gap: 0.15em;
@@ -322,7 +323,6 @@ html, body {
 .item.heads.subheads {
     margin: 0.18em 0 0.06em;
     padding-top: 0.10em;
-    border-top: 1px solid rgba(245, 208, 0, 0.45);
 }
 
 .item.heads.subheads .name {
