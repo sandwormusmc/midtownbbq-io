@@ -12,7 +12,7 @@ Nothing here changes the live marketing site or `mts/data/menu.json`. The handou
 - Hours sit in the same full-width footer on every page and TV screen: `MON Closed · TUE–FRI 11AM–7PM · SAT 12PM–8PM · SUN 12PM–7PM`.
 - Section headings are upright bold condensed (Oswald), white, with a yellow rule and a dark drop shadow. Prices are yellow (`#F5D000`). There is no trailing dot after Beverages or Desserts.
 
-Page 1: Sandwiches, Meat À La Carte, Sides, Quesadilla (right column top), then Crazy Potato, Whole Wings, Desserts (right column below).
+Page 1: Sandwiches + Meat À La Carte (left); Whole Wings, Sides, Desserts (right); Crazy Potato | Quesadilla on a shared bottom row.
 
 Page 2: Platters, Big Platters, Combos (left column); Sides, Catering, Specials, Beverages (right column).
 

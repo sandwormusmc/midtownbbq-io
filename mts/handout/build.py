@@ -299,6 +299,53 @@ def page_shell(title, body, extra_class="", page_css="") -> str:
 '''
 
 
+def as_photo_panel(sec, sid, sec_html=None) -> str:
+    """Turn a short image/hero section into a .side-section photo panel."""
+    if sec_html is None:
+        sec_html = render_section(sec, sid)
+    img_raw = sec.get("image") or sec.get("heroImage")
+    if not img_raw:
+        return sec_html
+    item_count = len(sec.get("items", [])) + len(sec.get("offers", []))
+    if item_count > 2:
+        return sec_html
+    img_src = img_raw if img_raw.startswith("assets/") else f"assets/generated/{img_raw}"
+    sec_html = sec_html.replace(
+        f'<img class="section-image" src="{img_src}" alt="{sec["title"]}">',
+        "",
+    ).replace(
+        f'<img class="section-hero-image" src="{img_src}" alt="{sec["title"]}">',
+        "",
+    )
+    m = re.match(
+        r'^(<section class="section"[^>]*><div class="section-head">.*?</div>)(.*)</section>$',
+        sec_html,
+        re.S,
+    )
+    if m:
+        head, tail = m.group(1), m.group(2)
+    else:
+        m = re.match(
+            r'^(<section class="section"[^>]*><h2>.*?</h2>)(.*)</section>$',
+            sec_html,
+            re.S,
+        )
+        if not m:
+            return sec_html
+        head, tail = m.group(1), m.group(2)
+        hm = re.match(r"(<h2>.*?</h2>)(.*)", head, re.S)
+        if hm:
+            head = f'<div class="section-head">{hm.group(1)}{hm.group(2)}</div>'
+    head_panel = head.replace('class="section"', 'class="section side-section"', 1)
+    return (
+        f"{head_panel}"
+        f'<div class="side-photo">'
+        f'<img class="section-bg-img" src="{img_src}" alt="{esc(sec["title"])}">'
+        f"{tail}"
+        f"</div></section>"
+    )
+
+
 def write_handout(menu) -> None:
     pages = []
     page_labels = {"page-1": "Front", "page-2": "Back"}
@@ -309,70 +356,25 @@ def write_handout(menu) -> None:
         # Override for front page
         if page["id"] == "page-1":
             mast = render_mast(menu)
-            # Any section with an `image` renders as a full-width photo panel
-            # (.side-section) inside its column; everything else is a normal
-            # text section. Columns stack in menu order.
             cols_html = []
             for col_ids in page["columns"]:
                 col_parts = []
                 for sid in col_ids:
                     sec = menu["sections"][sid]
-                    sec_html = render_section(sec, sid)
-                    # Any section with an `image` or `heroImage` and a section-head
-                    # (i.e. a priced section) renders as a full-width photo panel
-                    # (.side-section); the image becomes the dimmed background
-                    # behind the title + text. Plain <h2> sections like Sandwiches
-                    # stay as normal text sections.
-                    img_raw = sec.get("image") or sec.get("heroImage")
-                    if img_raw:
-                        # Only turn sections with minimal content into photo panels.
-                        # Sections with long item lists (e.g. Sandwiches) stay as
-                        # normal text sections with their inline hero image.
-                        item_count = len(sec.get("items", [])) + len(sec.get("offers", []))
-                        if item_count <= 2:
-                            img_src = img_raw if img_raw.startswith("assets/") else f'assets/generated/{img_raw}'
-                            # Drop the inline  tag; it becomes the dimmed background
-                            # layer behind the title + text (text stays full brightness).
-                            sec_html = sec_html.replace(
-                                f'<img class="section-image" src="{img_src}" alt="{sec["title"]}">',
-                                '',
-                            ).replace(
-                                f'<img class="section-hero-image" src="{img_src}" alt="{sec["title"]}">',
-                                '',
-                            )
-                            m = re.match(
-                                r'^(<section class="section"[^>]*><div class="section-head">.*?</div>)(.*)</section>$',
-                                sec_html,
-                                re.S,
-                            )
-                            if m:
-                                head, tail = m.group(1), m.group(2)
-                            else:
-                                # Sections without section-head (e.g. Combos: just <h2>)
-                                m = re.match(
-                                    r'^(<section class="section"[^>]*><h2>.*?</h2>)(.*)</section>$',
-                                    sec_html,
-                                    re.S,
-                                )
-                                if m:
-                                    head, tail = m.group(1), m.group(2)
-                                    hm = re.match(r'(<h2>.*?</h2>)(.*)', head, re.S)
-                                    if hm:
-                                        head = f'<div class="section-head">{hm.group(1)}{hm.group(2)}</div>'
-                                else:
-                                    head = tail = None
-                            if head:
-                                head_panel = head.replace('class="section"', 'class="section side-section"', 1)
-                                sec_html = (
-                                    f'{head_panel}'
-                                    f'<div class="side-photo">'
-                                    f'<img class="section-bg-img" src="{img_src}" alt="{esc(sec["title"])}">'
-                                    f'{tail}'
-                                    f'</div></section>'
-                                )
-                    col_parts.append(sec_html)
+                    col_parts.append(as_photo_panel(sec, sid))
                 cols_html.append(f'<div class="col">{"".join(col_parts)}</div>')
-            inner = mast + f'<div class="columns">{"".join(cols_html)}</div>' + render_hours(menu)
+            columns = f'<div class="columns">{"".join(cols_html)}</div>'
+            # Shared bottom row keeps Crazy Potato / Quesadilla headers on one baseline.
+            bottom_ids = page.get("bottomRow") or []
+            if bottom_ids:
+                cells = []
+                for sid in bottom_ids:
+                    sec = menu["sections"][sid]
+                    cells.append(f'<div class="bottom-cell">{as_photo_panel(sec, sid)}</div>')
+                bottom = f'<div class="bottom-row">{"".join(cells)}</div>'
+            else:
+                bottom = ""
+            inner = mast + columns + bottom + render_hours(menu)
 
         # Override for back page — combos gets the hero image behind its text
         if page["id"] == "page-2":
@@ -448,7 +450,20 @@ def write_handout(menu) -> None:
         "#page-1 .side-section .side-photo > p{margin:0 0.12in;font-size:17px;line-height:1.45;max-width:92%;font-family:Oswald,Impact,sans-serif;font-weight:600;text-shadow:0 2px 10px rgba(0,0,0,0.95);color:white!important;}"
         "#page-1 .side-section .side-photo > p.choice-note{font-size:13px;font-weight:500;text-transform:none;margin-top:0.10in;}"
         "#page-1 .mast{background:transparent;padding:0.12in 0.18in;border-radius:6px;margin-bottom:0.06in;}"
-        "#page-1 .col{justify-content:flex-start;}"
+        # Breathe list rows into the free space above the bottom photo row.
+        # Keep a fixed cushion (bottom-row margin-top) so lists never collide.
+        "#page-1 .columns{flex:1 1 auto;min-height:0;}"
+        "#page-1 .col{justify-content:flex-start;gap:0.16in;}"
+        "#page-1 .section{margin-bottom:0.04in;}"
+        "#page-1 .section h2,#page-1 .section-head{margin-bottom:0.07in;}"
+        "#page-1 .item{margin:0.065in 0;line-height:1.35;}"
+        "#page-1 .note,#page-1 .choice-note,#page-1 .detail{margin-top:0.045in;margin-bottom:0.07in;}"
+        "#page-1 .item.heads.subheads{margin-top:0.12in;margin-bottom:0.07in;}"
+        # Shared bottom row: Crazy Potato | Quesadilla on one baseline.
+        "#page-1 .bottom-row{display:grid;grid-template-columns:1fr 1fr;column-gap:0.25in;margin-top:0.14in;flex:0 0 auto;align-items:stretch;}"
+        "#page-1 .bottom-cell{min-width:0;display:flex;flex-direction:column;}"
+        "#page-1 .bottom-cell .side-section{flex:1;margin:0;}"
+        "#page-1 #section-crazyPotato .side-photo,#page-1 #section-quesadilla .side-photo{flex:0 0 auto;min-height:1.55in;height:1.55in;max-height:1.55in;}"
         # Whole Wings: priced rows over the hero; "Wings only" as a small note under them.
         "#page-1 #section-wings .side-photo{align-items:stretch;justify-content:flex-end;text-align:left;padding:0.10in 0.12in 0.08in;min-height:1.7in;}"
         "#page-1 #section-wings .side-photo > .item{width:100%;margin:0.04em 0;}"
